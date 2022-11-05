@@ -1,10 +1,22 @@
 import React , {useState} from "react";
-
-function LoginForm({Login,error}){
+import {useNavigate} from "react-router-dom";
+import {user} from "../user";
+function Login({LoginRequest,error}){
+    let User = undefined;
     const[details,setDetails]=useState({username:"",password:""});
-    const submitHandler= e=>{//This function call the login function
+    let navigate=useNavigate();
+    const submitHandler= async e=>{//This function call the login function
         e.preventDefault();//Prevent reload of the page
-        Login(details);
+        console.log(details);
+        User=new user(details.username,details.password)
+        let response=await User.login();
+        if(response){
+            navigate("/menu",{state:{user:User}});
+            console.log("ID FROM LOGIN",User.id,"API TOKEN FROM LOGIN",User.apiToken)
+        }else{
+            User=undefined
+            alert("Incorrect credentials")
+        }
     }
     return (
         <form onSubmit={submitHandler} >
@@ -24,4 +36,4 @@ function LoginForm({Login,error}){
         </form>
     )
 }
-export default LoginForm;
+export default Login;

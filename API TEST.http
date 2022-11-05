@@ -1,0 +1,3 @@
+POST https://habitica.com/api/v3/user/auth/local/login
+
+

@@ -2,12 +2,24 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+import {Menu} from "./pages/menu";
+import {Calendar} from "./pages/calendar";
+import {Error} from "./pages/error";
 import reportWebVitals from './reportWebVitals';
+import {BrowserRouter, Routes,Route} from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+      <BrowserRouter>
+          <Routes>
+              <Route path={"/"} element={<App/>}/>
+              <Route path={"/menu"} element={<Menu/>}/>
+              <Route path={"/calendar"} element={<Calendar/>}/>
+              <Route path={"*"} element={<Error/>}/>
+          </Routes>
+      </BrowserRouter>
+
   </React.StrictMode>
 );
 
