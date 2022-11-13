@@ -1,9 +1,14 @@
+import {habit,task,daily} from "./task";
+
 export class user{
     constructor(username,password) {
         this.username=username;
         this.password=password;
         this.id=undefined
         this.apiToken=undefined
+        this.data=undefined
+        this.dailies=[];
+        this.habits=[];
     }
     //This function send a login request to the server and save the id and api token to get more information from server
     async login(){
@@ -19,7 +24,6 @@ export class user{
         }).then(res=>{
             return res.json()
         }).then(data=>{
-            console.log(data)
             return data
         }).catch(error=>console.log("ERROR:",error))
         if(response.success) {
@@ -28,5 +32,53 @@ export class user{
         }
         return response.success
     }
+    async getTasksData(taskType=""){
+        let url="https://habitica.com/api/v3/tasks/user"
+        if(taskType!==""){
+            url=url+"?type ="+taskType
+        }
+        return await fetch(url, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-user': this.id,
+                'x-api-key': this.apiToken
+            },
+        }).then(res => {
+            return res.json()
+        }).then(data => {
+            return data
+        }).catch(error => console.log("ERROR:", error));
+
+    }
+    processTaskData(data){
+        data.data.forEach((task)=>{
+            if(task.type==="daily"){
+                let d=new daily(task.text,task.id,task.repeat,task.notes,task.history);
+                this.dailies.push(d);
+            }else if(task.type==="habit") {
+                let h=new habit(task.text,task.id,task.notes,task.history);
+                this.habits.push(h)
+            }
+        })
+    }
+    /*
+    async getTasksDataCSV(){
+        const response=await fetch("https://habitica.com/export/history.csv", {
+            method: "GET",
+            headers:{
+                'Content-Type':'application/json',
+                'x-api-user':this.id,
+                'x-api-key':this.apiToken
+            },
+            }).then(res=>{
+            return res.text()
+        }).then(data=>{
+            return data
+        }).catch(error=>console.log("ERROR:",error))
+        return response;
+    }
+     */
+
 }
 
