@@ -37,7 +37,7 @@ export class user{
         if(taskType!==""){
             url=url+"?type ="+taskType
         }
-        return await fetch(url, {
+        let response= await fetch(url, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -49,10 +49,14 @@ export class user{
         }).then(data => {
             return data
         }).catch(error => console.log("ERROR:", error));
+        if(response.success) {
+            this.data = response.data;
+        }
+        return response.success;
 
     }
     processTaskData(data){
-        data.data.forEach((task)=>{
+        data.forEach((task)=>{
             if(task.type==="daily"){
                 let d=new daily(task.text,task.id,task.repeat,task.notes,task.history);
                 this.dailies.push(d);
