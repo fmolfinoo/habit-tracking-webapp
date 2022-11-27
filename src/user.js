@@ -7,8 +7,8 @@ export class user{
         this.id=undefined
         this.apiToken=undefined
         this.data=undefined
-        this.dailies=[];
-        this.habits=[];
+        this.dailies=new Map();
+        this.habits=new Map();
     }
     //This function send a login request to the server and save the id and api token to get more information from server
     async login(){
@@ -58,11 +58,11 @@ export class user{
     processTaskData(data){
         data.forEach((task)=>{
             if(task.type==="daily"){
-                let d=new daily(task.text,task.id,task.repeat,task.notes,task.history);
-                this.dailies.push(d);
+                let d=new daily(task.text,this,task.id,task.repeat,task.notes,task.history);
+                this.dailies.set(task.text,d);
             }else if(task.type==="habit") {
-                let h=new habit(task.text,task.id,task.notes,task.history);
-                this.habits.push(h)
+                let h=new habit(task.text,this,task.id,task.notes,task.history);
+                this.habits.set(task.text,h)
             }
         })
     }
