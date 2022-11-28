@@ -1,5 +1,5 @@
-import {user} from "../user";
-import {task} from "../task";
+import {user} from "./user";
+import {task} from "./task";
 
 const GlobalTestUser = new user("disposable.17316@aleeas.com", "EpC8Y5XkqRKT2H");
 beforeAll(async ()=>{
@@ -62,7 +62,11 @@ test("addTaskChange test", async () => {
     await testTask.addTaskChange("I love Attack on Titan<3")
     console.log(testTask.TaskChanges);
     let change=testTask.TaskChanges.get("I love Attack on Titan<3");
-    expect(change.name==="I love Attack on Titan<3"&&(change.date.toLocaleDateString()===new Date(Date.now()).toLocaleDateString()&&change.copy==="[comment]: # (CHANGE:I love Attack on Titan<3,2022-11-26)")).toBe(true)
+    let now=new Date(Date.now())
+    let changeDate=new Date(now.toLocaleDateString());
+    //We add 1 to getUTCMonth because it counts month starting from 0 so january is 0
+    let changeString="[comment]: # (CHANGE:I love Attack on Titan<3,"+changeDate.getUTCFullYear()+"-"+(changeDate.getUTCMonth()+1)+"-"+changeDate.getUTCDate()+")";
+    expect(change.name==="I love Attack on Titan<3"&&(change.date.toLocaleDateString()===new Date(Date.now()).toLocaleDateString()&&change.copy===changeString)).toBe(true)
 })
 test("removeTaskChange test", async () => {
     let testTask=new task("test",GlobalTestUser,1234,"[comment]: #            (CHANGE:I love Attack on Titan<3,2921-12-30)");

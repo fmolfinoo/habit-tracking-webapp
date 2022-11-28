@@ -7,6 +7,9 @@ import {Calendar} from "./pages/calendar";
 import {Error} from "./pages/error";
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Routes,Route} from "react-router-dom";
+import ProtectedRoutes from "./ProtectedRoutes"
+import {Trends} from "./pages/trends";
+import {SuccessRate} from "./pages/successRate";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -14,9 +17,13 @@ root.render(
       <BrowserRouter>
           <Routes>
               <Route path={"/"} element={<App/>}/>
-              <Route path={"/menu"} element={<Menu/>}/>
-              <Route path={"/calendar"} element={<Calendar/>}/>
-              <Route path={"*"} element={<Error/>}/>
+              <Route element={<ProtectedRoutes/>}>
+                  <Route path={"/menu"} element={<Menu/>}/>
+                  <Route path={"/SuccessRate"} element={<SuccessRate/>}/>
+                  <Route path={"/calendar"} element={<Calendar/>}/>
+                  <Route path={"/trends"} element={<Trends/>}/>
+                  <Route path={"*"} element={<Error/>}/>
+              </Route>
           </Routes>
       </BrowserRouter>
 

@@ -1,19 +1,26 @@
 import React , {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {user} from "../user";
-function Login({LoginRequest,error}){
+import {type} from "@testing-library/user-event/dist/type";
+function Login(){
     let User = undefined;
     const[details,setDetails]=useState({username:"",password:""});
     let navigate=useNavigate();
     const submitHandler= async e=>{//This function call the login function
         e.preventDefault();//Prevent reload of the page
-        console.log(details);
         User=new user(details.username,details.password)
         let response=await User.login();
         if(response){
-            navigate("/menu",{state:{user:User}});
-            console.log("ID FROM LOGIN",User.id,"API TOKEN FROM LOGIN",User.apiToken)
-        }else{
+            let fetchData=await User.getTasksData()
+            if(fetchData){
+                window.sessionStorage.setItem("user",JSON.stringify(User))
+                User.processTaskData(User.data)
+                navigate("/menu",{state:{user:User}});
+            }
+            else{//If we failed to fetch the data
+                alert("Server Communication Error:Failed to fetch user Data")
+            }
+        }else {//if we failed to login
             User=undefined
             alert("Incorrect credentials")
         }

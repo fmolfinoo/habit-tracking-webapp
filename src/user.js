@@ -1,15 +1,18 @@
 import {habit,task,daily} from "./task";
 
 export class user{
-    constructor(username,password) {
+
+    constructor(username,password,id=undefined,apiToken=undefined,data=undefined) {
         this.username=username;
         this.password=password;
-        this.id=undefined
-        this.apiToken=undefined
-        this.data=undefined
+        this.id=id
+        this.apiToken=apiToken
+        this.data=data
         this.dailies=new Map();
         this.habits=new Map();
     }
+
+
     //This function send a login request to the server and save the id and api token to get more information from server
     async login(){
         const response=await fetch("https://habitica.com/api/v3/user/auth/local/login", {
@@ -66,23 +69,6 @@ export class user{
             }
         })
     }
-    /*
-    async getTasksDataCSV(){
-        const response=await fetch("https://habitica.com/export/history.csv", {
-            method: "GET",
-            headers:{
-                'Content-Type':'application/json',
-                'x-api-user':this.id,
-                'x-api-key':this.apiToken
-            },
-            }).then(res=>{
-            return res.text()
-        }).then(data=>{
-            return data
-        }).catch(error=>console.log("ERROR:",error))
-        return response;
-    }
-     */
 
 }
 

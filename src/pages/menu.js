@@ -1,10 +1,16 @@
-import React , {useState} from "react";
+import React , {useState,useEffect} from "react";
+import "./css/styles.css"
 import {useLocation} from "react-router";
+import Navbar from "../components/Navbar";
+import recreateUser from "../utils/recreateUser";
+import {useNavigate} from "react-router-dom";
 console.log("on Menu");
 export function Menu() {
-    const User=useLocation().state.user
-    console.log(User)
-    return(<div className={"menu"}>
-        <h2>Welcome {User.username}</h2>
-    </div>);
+    let User=recreateUser(useLocation().state.user)
+    return (
+        <div className={"trends"}>
+            <Navbar user={User}/>
+            <h2>"Welcome {User.username}"</h2>
+        </div>
+    );
 }

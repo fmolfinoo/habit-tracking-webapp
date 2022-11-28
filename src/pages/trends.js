@@ -4,12 +4,14 @@ import {useLocation} from "react-router";
 import Navbar from "../components/Navbar";
 import recreateUser from "../utils/recreateUser";
 import {useNavigate} from "react-router-dom";
-export function Calendar() {
+console.log("on Trends");
+export function Trends() {
+    console.log("Uselocation",useLocation().state)
     let User=recreateUser(useLocation().state.user)
-    return(
-        <div className={"calendar"}>
+    return (
+        <div className={"menu"}>
             <Navbar user={User}/>
-            <h2>On calendar</h2>
+            <h2>On Trends</h2>
             <h2>"Welcome {User.username}"</h2>
         </div>
     );

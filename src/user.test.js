@@ -11,11 +11,7 @@ test("Login function",async () => {
     let testUser=new user("disposable.17316@aleeas.com","EpC8Y5XkqRKT2H")
     let test = async () => {
         let respond = await testUser.login()
-        if (respond && testUser.id !== undefined && testUser.apiToken !== undefined) {
-            return true;
-        } else {
-            return false;
-        }
+        return !!(respond && testUser.id !== undefined && testUser.apiToken !== undefined);
     }
     let result = await test();
     expect(result).toBe(true)
