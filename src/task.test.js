@@ -1,5 +1,5 @@
 import {user} from "./user";
-import {task} from "./task";
+import {daily, habit, task} from "./task";
 
 const GlobalTestUser = new user("disposable.17316@aleeas.com", "EpC8Y5XkqRKT2H");
 beforeAll(async ()=>{
@@ -8,7 +8,7 @@ beforeAll(async ()=>{
     await GlobalTestUser.processTaskData(GlobalTestUser.data);
 })
 test("extractChanges Function-Basic TaskChange retrieval", () => {
-    let testTask=new task("test",GlobalTestUser,1234,"[comment]: #            (CHANGE:I love Attack on Titan<3,2921-12-30)");
+    let testTask=new task("test",GlobalTestUser,1234,"[comment]: #            (CHANGE:I love Attack on Titan<3,2921-12-30)",new Date(new Date(Date.now()).toLocaleDateString()));
     testTask.TaskChanges.clear();
     testTask.extractChanges(testTask.notes)
     console.log(testTask.TaskChanges);
@@ -43,7 +43,7 @@ test("extractChanges Function-Testing multiple inputs", () => {
         "[comment]: #            (CHANGE:bjbjkkj,2921-01-42)\n" +
         "\n" +
         "[comment]: #            (CHANGE: Don't be evil ,2004-03-01)\n" +
-        "\n");
+        "\n",new Date(Date.now()).toLocaleDateString());
     testTask.TaskChanges.clear();
     testTask.extractChanges(testTask.notes)
     console.log(testTask.TaskChanges);
@@ -58,7 +58,7 @@ test("extractChanges Function-Testing multiple inputs", () => {
 })
 
 test("addTaskChange test", async () => {
-    let testTask=new task("test",GlobalTestUser,1234,"");
+    let testTask=new task("test",GlobalTestUser,1234,"",new Date(new Date(Date.now()).toLocaleDateString()));
     await testTask.addTaskChange("I love Attack on Titan<3")
     console.log(testTask.TaskChanges);
     let change=testTask.TaskChanges.get("I love Attack on Titan<3");
@@ -69,7 +69,7 @@ test("addTaskChange test", async () => {
     expect(change.name==="I love Attack on Titan<3"&&(change.date.toLocaleDateString()===new Date(Date.now()).toLocaleDateString()&&change.copy===changeString)).toBe(true)
 })
 test("removeTaskChange test", async () => {
-    let testTask=new task("test",GlobalTestUser,1234,"[comment]: #            (CHANGE:I love Attack on Titan<3,2921-12-30)");
+    let testTask=new task("test",GlobalTestUser,1234,"[comment]: #            (CHANGE:I love Attack on Titan<3,2921-12-30)",new Date(new Date(Date.now()).toLocaleDateString()));
     console.log(testTask.TaskChanges);
     await testTask.removeTaskChange("I love Attack on Titan<3");
     console.log(testTask.TaskChanges);
@@ -83,7 +83,100 @@ test("modifyNote Test", async () => {
     let response=await commentTestTask.modifyNote(newNote)
     expect(response).toBe(true)
 })
+test("getAverage function daily test a week with every day due", () => {
+    let dueDates={
+        "m": true,
+        "t": true,
+        "w": true,
+        "th": true,
+        "f": true,
+        "s": true,
+        "su": true
+    }
+    let testDaily=new daily("test",GlobalTestUser,"1234",dueDates,"",[],"10/30/2022");
+    testDaily.history.set("11/28/2022",true)
+    testDaily.history.set("11/25/2022",true)
+    testDaily.history.set("11/26/2022",false)
+    testDaily.history.set("11/29/2022",true)
+    let result=testDaily.getAverage(7,testDaily.startDate,new Date('11/29/2022'))
+    console.log("Result",result)
+    expect(result===2.0/7.0).toBe(true)
+})
+test("getAverage function on dailies object with every day due and 30 days", () => {
+    let dueDates={
+        "m": true,
+        "t": true,
+        "w": true,
+        "th": true,
+        "f": true,
+        "s": true,
+        "su": true
+    }
+    let testDaily=new daily("test",GlobalTestUser,"1234",dueDates,"",[],"10/30/2022");
+    testDaily.history.set("11/20/2022",true)
+    testDaily.history.set("11/1/2022",true)
+    testDaily.history.set("11/8/2022",true)
+    testDaily.history.set("11/21/2022",true)
+    testDaily.history.set("11/29/2022",true)
+    let result=testDaily.getAverage(30,testDaily.startDate,new Date('11/29/2022'))
+    console.log("Result",result)
+    expect(result===4.0/30.0).toBe(true)
+})
+test("getAverage function daily test with some days disabled", () => {
+    let dueDates={
+        "m": false,
+        "t": true,
+        "w": true,
+        "th": true,
+        "f": true,
+        "s": true,
+        "su": false
+    }
+    let testDaily=new daily("test",GlobalTestUser,"1234",dueDates,"",[],"10/30/2022");
+    testDaily.history.set("11/21/2022",false)
+    testDaily.history.set("11/22/2022",true)
+    testDaily.history.set("11/23/2022",true)
+    testDaily.history.set("11/24/2022",true)
+    testDaily.history.set("11/25/2022",true)
+    testDaily.history.set("11/26/2022",true)
+    testDaily.history.set("11/27/2022",true)
+    let result=testDaily.getAverage(7,testDaily.startDate,new Date('11/28/2022'))
+    console.log("Result",result)
+    expect(result===1.0).toBe(true)
+})
+test("getAverage function daily test for task with no data", () => {
+    let dueDates={
+        "m": false,
+        "t": true,
+        "w": true,
+        "th": true,
+        "f": true,
+        "s": true,
+        "su": false
+    }
+    let testDaily=new daily("test",GlobalTestUser,"1234",dueDates,"",[],"11/28/2022");
+    let result=testDaily.getAverage(7,testDaily.startDate,new Date('11/28/2022'))
+    console.log("Result",result)
+    expect(result===0.0).toBe(true)
+})
 
+test("getAverage function for habit type test for a week", () => {
+    let testDaily=new habit("test",GlobalTestUser,"1234","",[],"10/30/2022");
+    testDaily.history.set("11/28/2022",{Positive: 1 ,Negative:0})
+    testDaily.history.set("11/25/2022",{Positive: 5 ,Negative:5})
+    testDaily.history.set("11/26/2022",{Positive: 8 ,Negative:2})
+    testDaily.history.set("11/29/2022",{Positive: 9 ,Negative:6})
+    let result=testDaily.getAverage(7,testDaily.startDate,new Date('11/29/2022'))
+    console.log("Result",result)
+    expect(result.Positive===14.0/7.0&&result.Negative===1.0).toBe(true)
+})
+test("getAverage function for habit type test without data", () => {
+    let testDaily=new habit("test",GlobalTestUser,"1234","",[],'11/29/2022');
+    testDaily.history.set("11/29/2022",{Positive: 9 ,Negative:6})
+    let result=testDaily.getAverage(7,testDaily.startDate,new Date('11/29/2022'))
+    console.log("Result",result)
+    expect(result.Positive===0.0&&result.Negative===0.0).toBe(true)
+})
 
 
 

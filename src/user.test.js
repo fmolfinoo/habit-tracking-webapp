@@ -128,8 +128,10 @@ test("ProcessTasksData Function-Process daily", async () => {
     })
     let checkTaskChange=testDaily.TaskChanges.get('testChange')!==undefined
     let checkHistory=testDaily.history.size===3
-    console.log(checkTaskChange,checkNote,checkHistory,checkUser,checkdueDates,checkId,checkName)
-    expect(checkHistory&&checkName&&checkUser&&checkId&&checkNote&&checkdueDates&&checkTaskChange).toBe(true);
+    console.log("StartDate",testDaily.startDate)
+    let checkStartDate=testDaily.startDate.toLocaleDateString()==="11/6/2022"
+    console.log(checkTaskChange,checkNote,checkHistory,checkUser,checkdueDates,checkId,checkName,checkStartDate)
+    expect(checkHistory&&checkName&&checkUser&&checkId&&checkNote&&checkdueDates&&checkTaskChange&&checkStartDate).toBe(true);
 })
 test("ProcessTasksData Function-Process habit", async () => {
     await GlobalTestUser.getTasksData();
@@ -176,8 +178,9 @@ test("ProcessTasksData Function-Process habit", async () => {
     let checkNote="[comment]:#(CHANGE:testChange,2022-09-06)"===testHabit.notes
     let checkTaskChange=testHabit.TaskChanges.get('testChange')!==undefined
     let checkHistory=testHabit.history.size===1
-    console.log(checkTaskChange,checkNote,checkHistory,checkUser,checkId,checkName)
-    expect(checkHistory&&checkName&&checkUser&&checkId&&checkNote&&checkTaskChange).toBe(true);
+    let checkStartDate=testHabit.startDate.toLocaleDateString()==="11/9/2022"
+    console.log(checkTaskChange,checkNote,checkHistory,checkUser,checkId,checkName,checkStartDate)
+    expect(checkHistory&&checkName&&checkUser&&checkId&&checkNote&&checkTaskChange&&checkStartDate).toBe(true);
 })
 
 

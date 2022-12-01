@@ -61,10 +61,10 @@ export class user{
     processTaskData(data){
         data.forEach((task)=>{
             if(task.type==="daily"){
-                let d=new daily(task.text,this,task.id,task.repeat,task.notes,task.history);
+                let d=new daily(task.text,this,task.id,task.repeat,task.notes,task.history,task.createdAt);
                 this.dailies.set(task.text,d);
             }else if(task.type==="habit") {
-                let h=new habit(task.text,this,task.id,task.notes,task.history);
+                let h=new habit(task.text,this,task.id,task.notes,task.history,task.createdAt);
                 this.habits.set(task.text,h)
             }
         })

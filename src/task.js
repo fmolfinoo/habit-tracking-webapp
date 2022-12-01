@@ -1,11 +1,12 @@
 export class task{
-    constructor(name,user,id,notes) {
+    constructor(name,user,id,notes,startDate) {
         this.name=name;
         this.user=user;
         this.id=id;
         this.notes=notes;
         this.history=new Map();
         this.TaskChanges=new Map();
+        this.startDate=new Date(startDate)
         this.extractChanges(this.notes);
     }
 
@@ -36,7 +37,6 @@ export class task{
         });
 
     }
-    "[comment]: # (CHANGE:name,YYYY-MM-DD)"
     async addTaskChange(name){
         let now=new Date(Date.now())
         let changeDate=new Date(now.toLocaleDateString());
@@ -89,26 +89,114 @@ export class task{
 }
 export class habit extends task{
     // eslint-disable-next-line no-useless-constructor
-    constructor(name,user,id,notes,history) {
-        super(name,user,id,notes);
+    /**
+     *
+     * @param {string}name
+     * @param {user}user
+     * @param {string}id
+     * @param {string}notes
+     * @param history
+     * @param {string}startDate
+     */
+    constructor(name,user,id,notes,history,startDate) {
+        super(name,user,id,notes,startDate);
         this.makeHistory(history);
     }
     makeHistory(history){
         history.forEach((e)=>{
             //We save the amount of positive and negative values for a given habit of a given date
-            this.history.set(new Date(e.date), {Positive: e.scoredUp ,Negative:e.scoredDown})
+            this.history.set(new Date(e.date).toLocaleDateString(), {Positive: e.scoredUp ,Negative:e.scoredDown})
         })
+    }
+    getAverage(timeFrame,startDate,now=new Date(new Date(Date.now()).toLocaleDateString())){
+        let startOfTimeFrame=new Date(now.toLocaleDateString())
+        startOfTimeFrame.setDate(startOfTimeFrame.getDate()-timeFrame)
+        let currentDate
+        //if the day of the task creation is earlier than the start of the Timeframe
+        if(startDate.getTime()<startOfTimeFrame.getTime()){
+            currentDate=startOfTimeFrame
+        }else{//If the day of the task creation is after calculated start of the timeframe
+            currentDate=startDate
+        }
+        let numDays=0.0
+        let PositiveSum=0.0;
+        let NegativeSum=0.0;
+        while(currentDate.getTime()<now.getTime()){
+            //We get the value of the current day
+            let dayValue = this.history.get(currentDate.toLocaleDateString())
+            //If day exist on the history we add data to the sum
+            if (dayValue !== undefined && dayValue !== null) {
+                PositiveSum+=dayValue.Positive
+                NegativeSum+=dayValue.Negative
+            }
+            //We increase the currentDate by one day
+            currentDate.setDate(currentDate.getDate() + 1)
+            numDays += 1.0
+            }
+        console.log("numDays",numDays,"PositiveSum",PositiveSum,"NegativeSum",NegativeSum)
+        //If the numDays passed is not zero we return the average success rate else we return 0
+        return numDays!==0.0 ? {Positive:PositiveSum/numDays,Negative:NegativeSum/numDays} : {Positive:0.0,Negative:0.0}
     }
 }
 export class daily extends task{
-    constructor(name,user,id,dueDates,notes,history) {
-        super(name,user,id,notes);
+    /**
+     *
+     * @param {string}name
+     * @param {user}user
+     * @param {string}id
+     * @param {Object} dueDates
+     * @param {string}notes
+     * @param {Object}history
+     * @param {string}startDate
+     */
+    constructor(name,user,id,dueDates,notes,history,startDate) {
+        super(name,user,id,notes,startDate);
         this.dueDates=new Map(Object.entries(dueDates));
         this.makeHistory(history);
     }
     makeHistory(history){
         history.forEach((e)=>{
-            this.history.set(new Date(e.date),e.completed)
+            this.history.set(new Date(e.date).toLocaleDateString(),e.completed)
         })
+    }
+    /**
+     * This function takes a timeFrame in days and the startDate as a Date and calculates the average completion rate of the daily task and return it as a float
+     * @param {number}timeFrame
+     * @param {Date} startDate
+     * @param {Date} now
+     * @return {number}
+     */
+    getAverage(timeFrame,startDate,now=new Date(new Date(Date.now()).toLocaleDateString())){
+        let startOfTimeFrame=new Date(now.toLocaleDateString())
+        startOfTimeFrame.setDate(startOfTimeFrame.getDate()-timeFrame)
+        let currentDate
+        //if the day of the task creation is earlier than the start of the Timeframe
+        if(startDate.getTime()<startOfTimeFrame.getTime()){
+            currentDate=startOfTimeFrame
+        }else{//If the day of the task creation is after calculated start of the timeframe
+            currentDate=startDate
+        }
+        let numDays=0.0
+        let sum=0.0;
+        //Days start with sunday at 0 index and end at saturday at 6 index
+        const days=["su","m", "t", "w", "th", "f", "s"]
+        while(currentDate.getTime()<now.getTime()){
+            //If current day is not a due date we skip it
+            if(!this.dueDates.get(days[currentDate.getDay()])){
+                currentDate.setDate(currentDate.getDate()+1)
+            }else {
+                //We get the value of the current day
+                let dayValue = this.history.get(currentDate.toLocaleDateString())
+                if (dayValue !== undefined && dayValue !== null && dayValue) {
+                    sum += 1.0
+                }
+                //We increase the currentDate by one day
+                currentDate.setDate(currentDate.getDate() + 1)
+                numDays += 1.0
+            }
+        }
+        console.log("numDays",numDays,"Sum",sum)
+        //If the numDays passed is not zero we return the average success rate else we return 0
+        return numDays!==0.0 ? sum/numDays : 0.0
     }
 }

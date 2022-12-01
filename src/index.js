@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import {Menu} from "./pages/menu";
-import {Calendar} from "./pages/calendar";
+import {Calendar_page} from "./pages/calendar";
 import {Error} from "./pages/error";
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Routes,Route} from "react-router-dom";
@@ -20,7 +20,7 @@ root.render(
               <Route element={<ProtectedRoutes/>}>
                   <Route path={"/menu"} element={<Menu/>}/>
                   <Route path={"/SuccessRate"} element={<SuccessRate/>}/>
-                  <Route path={"/calendar"} element={<Calendar/>}/>
+                  <Route path={"/calendar"} element={<Calendar_page/>}/>
                   <Route path={"/trends"} element={<Trends/>}/>
                   <Route path={"*"} element={<Error/>}/>
               </Route>
