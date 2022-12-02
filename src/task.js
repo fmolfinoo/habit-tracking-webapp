@@ -85,6 +85,10 @@ export class task{
         }
         return response.success;
     }
+    getTotalDaysSinceStart(now=Date.now()){
+
+        return Math.floor((now -this.startDate.getTime())/(1000*60*60*24))
+    }
 
 }
 export class habit extends task{
@@ -108,7 +112,7 @@ export class habit extends task{
             this.history.set(new Date(e.date).toLocaleDateString(), {Positive: e.scoredUp ,Negative:e.scoredDown})
         })
     }
-    getAverage(timeFrame,startDate,now=new Date(new Date(Date.now()).toLocaleDateString())){
+    getAverage(timeFrame,startDate=this.startDate,now=new Date(new Date(Date.now()).toLocaleDateString())){
         let startOfTimeFrame=new Date(now.toLocaleDateString())
         startOfTimeFrame.setDate(startOfTimeFrame.getDate()-timeFrame)
         let currentDate
@@ -116,7 +120,7 @@ export class habit extends task{
         if(startDate.getTime()<startOfTimeFrame.getTime()){
             currentDate=startOfTimeFrame
         }else{//If the day of the task creation is after calculated start of the timeframe
-            currentDate=startDate
+            currentDate=new Date(startDate.toLocaleDateString())
         }
         let numDays=0.0
         let PositiveSum=0.0;
@@ -133,7 +137,7 @@ export class habit extends task{
             currentDate.setDate(currentDate.getDate() + 1)
             numDays += 1.0
             }
-        console.log("numDays",numDays,"PositiveSum",PositiveSum,"NegativeSum",NegativeSum)
+        //console.log("numDays",numDays,"PositiveSum",PositiveSum,"NegativeSum",NegativeSum)
         //If the numDays passed is not zero we return the average success rate else we return 0
         return numDays!==0.0 ? {Positive:PositiveSum/numDays,Negative:NegativeSum/numDays} : {Positive:0.0,Negative:0.0}
     }
@@ -156,7 +160,8 @@ export class daily extends task{
     }
     makeHistory(history){
         history.forEach((e)=>{
-            this.history.set(new Date(e.date).toLocaleDateString(),e.completed)
+            //If completed is undefined then convert to false else we put the current value
+            this.history.set(new Date(e.date).toLocaleDateString(),e.completed===undefined ? false :e.completed)
         })
     }
     /**
@@ -166,7 +171,7 @@ export class daily extends task{
      * @param {Date} now
      * @return {number}
      */
-    getAverage(timeFrame,startDate,now=new Date(new Date(Date.now()).toLocaleDateString())){
+    getAverage(timeFrame,startDate=this.startDate,now=new Date(new Date(Date.now()).toLocaleDateString())){
         let startOfTimeFrame=new Date(now.toLocaleDateString())
         startOfTimeFrame.setDate(startOfTimeFrame.getDate()-timeFrame)
         let currentDate
@@ -174,7 +179,7 @@ export class daily extends task{
         if(startDate.getTime()<startOfTimeFrame.getTime()){
             currentDate=startOfTimeFrame
         }else{//If the day of the task creation is after calculated start of the timeframe
-            currentDate=startDate
+            currentDate=new Date(startDate.toLocaleDateString())
         }
         let numDays=0.0
         let sum=0.0;
@@ -195,8 +200,9 @@ export class daily extends task{
                 numDays += 1.0
             }
         }
-        console.log("numDays",numDays,"Sum",sum)
+        //console.log("numDays",numDays,"Sum",sum)
         //If the numDays passed is not zero we return the average success rate else we return 0
         return numDays!==0.0 ? sum/numDays : 0.0
     }
+
 }

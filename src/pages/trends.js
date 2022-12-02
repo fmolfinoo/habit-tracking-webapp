@@ -5,7 +5,6 @@ import Navbar from "../components/Navbar";
 import recreateUser from "../utils/recreateUser";
 import {useNavigate} from "react-router-dom";
 console.log("on Trends");
-
 export function Trends() {
     console.log("Uselocation",useLocation().state)
     let User=recreateUser(useLocation().state.user)

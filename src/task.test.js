@@ -177,6 +177,12 @@ test("getAverage function for habit type test without data", () => {
     console.log("Result",result)
     expect(result.Positive===0.0&&result.Negative===0.0).toBe(true)
 })
+test("Test getTotalDaysSinceStart function",()=>{
+    let testDaily=new habit("test",GlobalTestUser,"1234","",[],'11/21/2022');
+    let now=new Date('11/28/2022').getTime()//12/01/2022 on seconds
+    expect(testDaily.getTotalDaysSinceStart(now)).toBe(7)
+
+})
 
 
 

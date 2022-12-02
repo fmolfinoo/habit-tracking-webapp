@@ -1,0 +1,26 @@
+table, th, td {
+    table-layout:auto;
+    border: 2px solid;
+    border-collapse: collapse;
+    padding: 0;
+}
+table{
+    display: table;
+    overflow-y: scroll;
+}
+.Dailies-Table th {
+    background-color: #90ded8;
+
+}
+.Dailies-Table tr {
+    background-color: #D6EEEE;
+
+}
+.Habit-Table th {
+    background-color: #a93cc2;
+
+}
+.Habit-Table tr {
+    background-color: #ebacf1;
+
+}
