@@ -112,7 +112,7 @@ export class habit extends task{
             this.history.set(new Date(e.date).toLocaleDateString(), {Positive: e.scoredUp ,Negative:e.scoredDown})
         })
     }
-    getAverage(timeFrame,startDate=this.startDate,now=new Date(new Date(Date.now()).toLocaleDateString())){
+    getAverage(timeFrame,startDate=this.startDate,now=new Date(new Date(Date.now()).toLocaleDateString()),dueDates=new Map(Object.entries({"m": true, "t": true, "w": true, "th": true, "f": true, "s": true, "su": true}))){
         let startOfTimeFrame=new Date(now.toLocaleDateString())
         startOfTimeFrame.setDate(startOfTimeFrame.getDate()-timeFrame)
         let currentDate
@@ -122,24 +122,78 @@ export class habit extends task{
         }else{//If the day of the task creation is after calculated start of the timeframe
             currentDate=new Date(startDate.toLocaleDateString())
         }
+        //Days start with sunday at 0 index and end at saturday at 6 index
+        const days=["su","m", "t", "w", "th", "f", "s"]
         let numDays=0.0
         let PositiveSum=0.0;
         let NegativeSum=0.0;
-        while(currentDate.getTime()<now.getTime()){
-            //We get the value of the current day
-            let dayValue = this.history.get(currentDate.toLocaleDateString())
-            //If day exist on the history we add data to the sum
-            if (dayValue !== undefined && dayValue !== null) {
-                PositiveSum+=dayValue.Positive
-                NegativeSum+=dayValue.Negative
+        while(currentDate.getTime()<now.getTime()) {
+            //If current day is not a due date we skip it
+            if (!dueDates.get(days[currentDate.getDay()])) {
+                currentDate.setDate(currentDate.getDate() + 1)
+            } else {
+                //We get the value of the current day
+                let dayValue = this.history.get(currentDate.toLocaleDateString())
+                //If day exist on the history we add data to the sum
+                if (dayValue !== undefined && dayValue !== null) {
+                    PositiveSum += dayValue.Positive
+                    NegativeSum += dayValue.Negative
+                }
+                //We increase the currentDate by one day
+                currentDate.setDate(currentDate.getDate() + 1)
+                numDays += 1.0
             }
-            //We increase the currentDate by one day
-            currentDate.setDate(currentDate.getDate() + 1)
-            numDays += 1.0
-            }
+        }
         //console.log("numDays",numDays,"PositiveSum",PositiveSum,"NegativeSum",NegativeSum)
         //If the numDays passed is not zero we return the average success rate else we return 0
         return numDays!==0.0 ? {Positive:PositiveSum/numDays,Negative:NegativeSum/numDays} : {Positive:0.0,Negative:0.0}
+    }
+    /***
+     *
+     * @param {int}timeFrame
+     * @param {Date}startDate
+     * @param {Date}now
+     * @param {Map<string,string>}dueDates
+     * @return {{positiveData: *[], negativeData: *[], days: *[]}}
+     */
+    getCompleteHistory(timeFrame,startDate=this.startDate,now=new Date(new Date(Date.now()).toLocaleDateString()),dueDates=new Map(Object.entries({"m": true, "t": true, "w": true, "th": true, "f": true, "s": true, "su": true}))){
+        let startOfTimeFrame=new Date(now.toLocaleDateString())
+        startOfTimeFrame.setDate(startOfTimeFrame.getDate()-timeFrame)
+        let currentDate
+        //if the day of the task creation is earlier than the start of the Timeframe
+        if(startDate.getTime()<startOfTimeFrame.getTime()){
+            currentDate=startOfTimeFrame
+        }else{//If the day of the task creation is after calculated start of the timeframe
+            currentDate=new Date(startDate.toLocaleDateString())
+        }
+        //Days start with sunday at 0 index and end at saturday at 6 index
+        const days=["su","m", "t", "w", "th", "f", "s"]
+        let DataListPositive=[]
+        let DataListNegative=[]
+        let DaysList=[]
+        while(currentDate.getTime()<now.getTime()){
+            //If current day is not a due date we skip it
+            if(!dueDates.get(days[currentDate.getDay()])){
+                currentDate.setDate(currentDate.getDate()+1)
+            }else {
+                //We get the value of the current day
+                let dayValue = this.history.get(currentDate.toLocaleDateString())
+                DaysList.push(currentDate.toLocaleDateString())
+
+                if (dayValue !== undefined && dayValue !== null) {
+                    //if there is an input for the day we record the values
+                    DataListPositive.push(dayValue.Positive)
+                    DataListNegative.push(dayValue.Negative)
+                }else{
+                    //else we put 0 as the data
+                    DataListPositive.push(0)
+                    DataListNegative.push(0)
+                }
+                //We increase the currentDate by one day
+                currentDate.setDate(currentDate.getDate() + 1)
+            }
+        }
+        return {days:DaysList ,positiveData:DataListPositive ,negativeData:DataListNegative}
     }
 }
 export class daily extends task{
@@ -169,9 +223,10 @@ export class daily extends task{
      * @param {number}timeFrame
      * @param {Date} startDate
      * @param {Date} now
+     * @param {Map<string,boolean>}dueDates
      * @return {number}
      */
-    getAverage(timeFrame,startDate=this.startDate,now=new Date(new Date(Date.now()).toLocaleDateString())){
+    getAverage(timeFrame,startDate=this.startDate,now=new Date(new Date(Date.now()).toLocaleDateString()),dueDates=this.dueDates){
         let startOfTimeFrame=new Date(now.toLocaleDateString())
         startOfTimeFrame.setDate(startOfTimeFrame.getDate()-timeFrame)
         let currentDate
@@ -187,7 +242,7 @@ export class daily extends task{
         const days=["su","m", "t", "w", "th", "f", "s"]
         while(currentDate.getTime()<now.getTime()){
             //If current day is not a due date we skip it
-            if(!this.dueDates.get(days[currentDate.getDay()])){
+            if(!dueDates.get(days[currentDate.getDay()])){
                 currentDate.setDate(currentDate.getDate()+1)
             }else {
                 //We get the value of the current day
@@ -203,6 +258,49 @@ export class daily extends task{
         //console.log("numDays",numDays,"Sum",sum)
         //If the numDays passed is not zero we return the average success rate else we return 0
         return numDays!==0.0 ? sum/numDays : 0.0
+    }
+    /***
+     *
+     * @param {int}timeFrame
+     * @param {Date}startDate
+     * @param {Date}now
+     * @param {Map<string,boolean>}dueDates
+     * @return {{data: *[], days: *[]}}
+     */
+    getCompleteHistory(timeFrame,startDate=this.startDate,now=new Date(new Date(Date.now()).toLocaleDateString()),dueDates=this.dueDates){
+        let startOfTimeFrame=new Date(now.toLocaleDateString())
+        startOfTimeFrame.setDate(startOfTimeFrame.getDate()-timeFrame)
+        let currentDate
+        //if the day of the task creation is earlier than the start of the Timeframe
+        if(startDate.getTime()<startOfTimeFrame.getTime()){
+            currentDate=startOfTimeFrame
+        }else{//If the day of the task creation is after calculated start of the timeframe
+            currentDate=new Date(startDate.toLocaleDateString())
+        }
+        //Days start with sunday at 0 index and end at saturday at 6 index
+        const days=["su","m", "t", "w", "th", "f", "s"]
+        let DataList=[]
+        let DaysList=[]
+        while(currentDate.getTime()<now.getTime()){
+            //If current day is not a due date we skip it
+            if(!dueDates.get(days[currentDate.getDay()])){
+                currentDate.setDate(currentDate.getDate()+1)
+            }else {
+                //We get the value of the current day
+                let dayValue = this.history.get(currentDate.toLocaleDateString())
+                DaysList.push(currentDate.toLocaleDateString())
+                if (dayValue !== undefined && dayValue !== null && dayValue) {
+                    //If the task have been completed then we record one
+                    DataList.push(1)
+                }else{
+                    //else if it wasn't completed or have not been recorded we put 0
+                    DataList.push(0)
+                }
+                //We increase the currentDate by one day
+                currentDate.setDate(currentDate.getDate() + 1)
+            }
+        }
+        return {days:DaysList , data:DataList}
     }
 
 }

@@ -2,6 +2,12 @@ import {user} from "./user";
 import {daily, habit, task} from "./task";
 
 const GlobalTestUser = new user("disposable.17316@aleeas.com", "EpC8Y5XkqRKT2H");
+const arraysEqual=(a1,a2)=>{
+    if(a1.length!==a2.length){
+        return false
+    }
+    return a1.every((e,i)=>a2[i]===e)
+}
 beforeAll(async ()=>{
     await GlobalTestUser.login();
     await GlobalTestUser.getTasksData();
@@ -161,28 +167,98 @@ test("getAverage function daily test for task with no data", () => {
 })
 
 test("getAverage function for habit type test for a week", () => {
-    let testDaily=new habit("test",GlobalTestUser,"1234","",[],"10/30/2022");
-    testDaily.history.set("11/28/2022",{Positive: 1 ,Negative:0})
-    testDaily.history.set("11/25/2022",{Positive: 5 ,Negative:5})
-    testDaily.history.set("11/26/2022",{Positive: 8 ,Negative:2})
-    testDaily.history.set("11/29/2022",{Positive: 9 ,Negative:6})
-    let result=testDaily.getAverage(7,testDaily.startDate,new Date('11/29/2022'))
+    let testHabit=new habit("test",GlobalTestUser,"1234","",[],"10/30/2022");
+    testHabit.history.set("11/28/2022",{Positive: 1 ,Negative:0})
+    testHabit.history.set("11/25/2022",{Positive: 5 ,Negative:5})
+    testHabit.history.set("11/26/2022",{Positive: 8 ,Negative:2})
+    testHabit.history.set("11/29/2022",{Positive: 9 ,Negative:6})
+    let result=testHabit.getAverage(7,testHabit.startDate,new Date('11/29/2022'))
     console.log("Result",result)
     expect(result.Positive===14.0/7.0&&result.Negative===1.0).toBe(true)
 })
+test("getAverage function for habit type test for a week without counting every day", () => {
+    let testHabit=new habit("test",GlobalTestUser,"1234","",[],"10/30/2022");
+    testHabit.history.set("11/28/2022",{Positive: 1 ,Negative:0})
+    testHabit.history.set("11/25/2022",{Positive: 5 ,Negative:5})
+    testHabit.history.set("11/26/2022",{Positive: 8 ,Negative:2})
+    testHabit.history.set("11/29/2022",{Positive: 9 ,Negative:6})
+    let result=testHabit.getAverage(7,testHabit.startDate,new Date('11/29/2022'),new Map(Object.entries({"m": false, "t": true, "w": true, "th": true, "f": false, "s": true, "su": true})))
+    console.log("Result",result)
+    expect(result.Positive===8.0/5.0&&result.Negative===2.0/5.0).toBe(true)
+})
 test("getAverage function for habit type test without data", () => {
-    let testDaily=new habit("test",GlobalTestUser,"1234","",[],'11/29/2022');
-    testDaily.history.set("11/29/2022",{Positive: 9 ,Negative:6})
-    let result=testDaily.getAverage(7,testDaily.startDate,new Date('11/29/2022'))
+    let testHabit=new habit("test",GlobalTestUser,"1234","",[],'11/29/2022');
+    testHabit.history.set("11/29/2022",{Positive: 9 ,Negative:6})
+    let result=testHabit.getAverage(7,testHabit.startDate,new Date('11/29/2022'))
     console.log("Result",result)
     expect(result.Positive===0.0&&result.Negative===0.0).toBe(true)
 })
-test("Test getTotalDaysSinceStart function",()=>{
-    let testDaily=new habit("test",GlobalTestUser,"1234","",[],'11/21/2022');
+test("getTotalDaysSinceStart function",()=>{
+    let testHabit=new daily("test",GlobalTestUser,"1234",["su","m", "t", "w", "th", "f", "s"],"",[],'11/21/2022');
     let now=new Date('11/28/2022').getTime()//12/01/2022 on seconds
-    expect(testDaily.getTotalDaysSinceStart(now)).toBe(7)
-
+    expect(testHabit.getTotalDaysSinceStart(now)).toBe(7)
 })
-
+test("getCompleteHistory function for daily type counting every day",()=>{
+    let testDaily=new daily("test",GlobalTestUser,"1234",{"m": true, "t": true, "w": true, "th": true, "f": true, "s": true, "su": true},"",[],'11/21/2022');
+    testDaily.history.set("1/1/2023",false)
+    testDaily.history.set("1/4/2023",false)
+    testDaily.history.set("1/5/2023",true)
+    testDaily.history.set("1/2/2023",true)
+    testDaily.history.set("1/10/2023",false)
+    testDaily.history.set("12/31/2022",true)
+    let now=new Date('1/7/2023')
+    let completeHistory=testDaily.getCompleteHistory(7,testDaily.startDate,now)
+    console.log(completeHistory)
+    let testDates=arraysEqual(completeHistory.days,["12/31/2022","1/1/2023","1/2/2023","1/3/2023","1/4/2023","1/5/2023","1/6/2023"])
+    let testData=arraysEqual(completeHistory.data,[1,0,1,0,0,1,0])
+    expect(testDates&&testData).toBe(true)
+})
+test("getCompleteHistory function for habit type couting every day",()=>{
+    let testDaily=new habit("test",GlobalTestUser,"1234","",[],'11/21/2022');
+    testDaily.history.set("1/1/2023",{Positive:3 ,Negative:0})
+    testDaily.history.set("1/4/2023",{Positive:0 ,Negative:5})
+    testDaily.history.set("1/5/2023",{Positive:2 ,Negative:1})
+    testDaily.history.set("1/2/2023",{Positive:10 ,Negative:0})
+    testDaily.history.set("1/10/2023",{Positive:0 ,Negative:0})
+    testDaily.history.set("12/31/2022",{Positive:1 ,Negative:0})
+    let now=new Date('1/7/2023')
+    let completeHistory=testDaily.getCompleteHistory(7,testDaily.startDate,now)
+    console.log(completeHistory)
+    let testDates=arraysEqual(completeHistory.days,["12/31/2022","1/1/2023","1/2/2023","1/3/2023","1/4/2023","1/5/2023","1/6/2023"])
+    let testData1=arraysEqual(completeHistory.positiveData,[1,3,10,0,0,2,0])
+    let testData2=arraysEqual(completeHistory.negativeData,[0,0,0,0,5,1,0])
+    expect(testDates&&testData1&&testData2).toBe(true)
+})
+test("getCompleteHistory function for daily type without counting every day",()=>{
+    let testDaily=new daily("test",GlobalTestUser,"1234",{"m": false, "t": true, "w": true, "th": true, "f": true, "s": true, "su": false},"",[],'11/21/2022');
+    testDaily.history.set("1/1/2023",false)
+    testDaily.history.set("1/4/2023",false)
+    testDaily.history.set("1/5/2023",true)
+    testDaily.history.set("1/2/2023",true)
+    testDaily.history.set("1/10/2023",false)
+    testDaily.history.set("12/31/2022",true)
+    let now=new Date('1/7/2023')
+    let completeHistory=testDaily.getCompleteHistory(7,testDaily.startDate,now,testDaily.dueDates)
+    console.log(completeHistory)
+    let testDates=arraysEqual(completeHistory.days,["12/31/2022","1/3/2023","1/4/2023","1/5/2023","1/6/2023"])
+    let testData=arraysEqual(completeHistory.data,[1,0,0,1,0])
+    expect(testDates&&testData).toBe(true)
+})
+test("getCompleteHistory function for habit type without counting every day",()=>{
+    let testDaily=new habit("test",GlobalTestUser,"1234","",[],'11/21/2022');
+    testDaily.history.set("1/1/2023",{Positive:3 ,Negative:0})
+    testDaily.history.set("1/4/2023",{Positive:0 ,Negative:5})
+    testDaily.history.set("1/5/2023",{Positive:2 ,Negative:1})
+    testDaily.history.set("1/2/2023",{Positive:10 ,Negative:0})
+    testDaily.history.set("1/10/2023",{Positive:0 ,Negative:0})
+    testDaily.history.set("12/31/2022",{Positive:1 ,Negative:0})
+    let now=new Date('1/7/2023')
+    let completeHistory=testDaily.getCompleteHistory(7,testDaily.startDate,now,new Map(Object.entries({"m": true, "t": false, "w": true, "th": true, "f": false, "s": true, "su": true})))
+    console.log(completeHistory)
+    let testDates=arraysEqual(completeHistory.days,["12/31/2022","1/1/2023","1/2/2023","1/4/2023","1/5/2023"])
+    let testData1=arraysEqual(completeHistory.positiveData,[1,3,10,0,2])
+    let testData2=arraysEqual(completeHistory.negativeData,[0,0,0,5,1])
+    expect(testDates&&testData1&&testData2).toBe(true)
+})
 
 
