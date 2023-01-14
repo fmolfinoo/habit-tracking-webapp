@@ -1,0 +1,7 @@
+.TaskItem{
+    flex-direction:column;
+
+}
+fieldset{
+    width: fit-content;
+}

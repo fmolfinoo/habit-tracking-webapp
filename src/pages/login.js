@@ -1,7 +1,7 @@
 import React , {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {user} from "../user";
-import {type} from "@testing-library/user-event/dist/type";
+
 function Login(){
     let User = undefined;
     const[details,setDetails]=useState({username:"",password:""});
