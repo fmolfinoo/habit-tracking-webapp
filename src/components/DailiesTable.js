@@ -1,7 +1,8 @@
 import {numToPercentage} from "../utils/numToPercentage";
-function DailiesTable(user){
+import mapGetTypeList from "../utils/mapGetTypeList";
+function DailiesTable({user}){
     let dailiesTable=[];
-    for(let e of user.user.dailies.values()){
+    for(let e of mapGetTypeList(user.tasks,"daily")){
         dailiesTable.push(<DailiesTableRow task={e}/>)
     }
     return(
@@ -23,19 +24,19 @@ function DailiesTable(user){
     )
 
 }
-function DailiesTableRow(task){
-    const totalDaysSinceCreation=task.task.getTotalDaysSinceStart()
+function DailiesTableRow({task}){
+    const totalDaysSinceCreation=task.getTotalDaysSinceStart()
     return (<tr>
-        <td>{task.task.name}</td>
-        <td>{task.task.startDate.toLocaleDateString()}</td>
+        <td>{task.name}</td>
+        <td>{task.startDate.toLocaleDateString()}</td>
         <td>{totalDaysSinceCreation}</td>
-        <td>{numToPercentage(task.task.getAverage(7))}</td>
-        <td>{numToPercentage(task.task.getAverage(14))}</td>
-        <td>{numToPercentage(task.task.getAverage(30))}</td>
-        <td>{numToPercentage(task.task.getAverage(90))}</td>
-        <td>{numToPercentage(task.task.getAverage(180))}</td>
-        <td>{numToPercentage(task.task.getAverage(365))}</td>
-        <td>{numToPercentage(task.task.getAverage(totalDaysSinceCreation))}</td>
+        <td>{numToPercentage(task.getAverage(7))}</td>
+        <td>{numToPercentage(task.getAverage(14))}</td>
+        <td>{numToPercentage(task.getAverage(30))}</td>
+        <td>{numToPercentage(task.getAverage(90))}</td>
+        <td>{numToPercentage(task.getAverage(180))}</td>
+        <td>{numToPercentage(task.getAverage(365))}</td>
+        <td>{numToPercentage(task.getAverage(totalDaysSinceCreation))}</td>
     </tr>)
 }
 export default DailiesTable

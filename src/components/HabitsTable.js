@@ -1,9 +1,9 @@
 import "../pages/css/table.css"
 import {numToPercentage} from "../utils/numToPercentage";
-function HabitsTable(user){
+import mapGetTypeList from "../utils/mapGetTypeList";
+function HabitsTable({user}){
     let habitsTable=[];
-    for(let e of user.user.habits.values()){
-        console.log(e)
+    for(let e of mapGetTypeList(user.tasks,"habit")){
         habitsTable.push(<HabitsTableRow task={e}/>)
     }
     return(
@@ -25,24 +25,23 @@ function HabitsTable(user){
     )
 
 }
-function HabitsTableRow(task){
-    const totalDaysSinceCreation=task.task.getTotalDaysSinceStart()
+function HabitsTableRow({task}){
+    const totalDaysSinceCreation=task.getTotalDaysSinceStart()
     return (
         <tr>
-        <td>{task.task.name}</td>
-        <td>{task.task.startDate.toLocaleDateString()}</td>
+        <td>{task.name}</td>
+        <td>{task.startDate.toLocaleDateString()}</td>
         <td>{totalDaysSinceCreation}</td>
-            <HabitCellFormat data={task.task.getAverage(7)}/>
-            <HabitCellFormat data={task.task.getAverage(14)}/>
-            <HabitCellFormat data={task.task.getAverage(30)}/>
-            <HabitCellFormat data={task.task.getAverage(90)}/>
-            <HabitCellFormat data={task.task.getAverage(180)}/>
-            <HabitCellFormat data={task.task.getAverage(365)}/>
-            <HabitCellFormat data={task.task.getAverage(totalDaysSinceCreation)}/>
+            <HabitCellFormat data={task.getAverage(7)}/>
+            <HabitCellFormat data={task.getAverage(14)}/>
+            <HabitCellFormat data={task.getAverage(30)}/>
+            <HabitCellFormat data={task.getAverage(90)}/>
+            <HabitCellFormat data={task.getAverage(180)}/>
+            <HabitCellFormat data={task.getAverage(365)}/>
+            <HabitCellFormat data={task.getAverage(totalDaysSinceCreation)}/>
     </tr>)
 }
-function HabitCellFormat(data){
-    console.log("data",data)
-    return <td>&#129045;{data.data.Positive.toFixed(2)}&#129047;{data.data.Negative.toFixed(2)}</td>
+function HabitCellFormat({data}){
+    return <td>&#129045;{data.Positive.toFixed(2)}&#129047;{data.Negative.toFixed(2)}</td>
 }
 export default HabitsTable

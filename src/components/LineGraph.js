@@ -10,21 +10,12 @@ function LineGraph({curTask,user,movingAverage=false,dueDates,timeframe=30}){
     let currentTask=undefined
     let HabitInfo=undefined
     if(curTask!==null&&curTask.element!==undefined){
-        if(curTask.type==="Habits"){
-            currentTask=user.habits.get(curTask.element)
-            console.log("constructor name",currentTask.constructor.name)
-            if(typeof timeframe.element==='string'){
-                timeframe.element=diffBetweenDays(currentTask.TaskChanges.get(timeframe.element).date)
-            }
-            //We check if dueDates has any date activated if not we use default days
-            HabitInfo=currentTask.getCompleteHistory(timeframe.element,currentTask.startDate,mapAllValuesEqual(dueDates) ?currentTask.dueDates:dueDates )
-        }else if(curTask.type==="Dailies"){
-            currentTask=user.dailies.get(curTask.element)
-            if(typeof timeframe.element==='string'){
-                timeframe.element=diffBetweenDays(currentTask.TaskChanges.get(timeframe.element).date)
-            }
-            HabitInfo=currentTask.getCompleteHistory(timeframe.element,currentTask.startDate,currentTask.dueDates,mapAllValuesEqual(dueDates) ?currentTask.dueDates:dueDates )
+        currentTask=user.tasks.get(curTask.element)
+        if(typeof timeframe.element==='string'){
+            timeframe.element=diffBetweenDays(currentTask.TaskChanges.get(timeframe.element).date)
         }
+        //We check if dueDates has any date activated if not we use default days
+        HabitInfo=currentTask.getCompleteHistory(timeframe.element,currentTask.startDate,mapAllValuesEqual(dueDates) ?currentTask.dueDates:dueDates )
     }
     return(
         <div>

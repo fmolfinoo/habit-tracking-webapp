@@ -4,7 +4,6 @@ import "./css/table.css"
 import {useLocation} from "react-router";
 import Navbar from "../components/Navbar";
 import recreateUser from "../utils/recreateUser";
-import {useNavigate} from "react-router-dom";
 import DailiesTable from "../components/DailiesTable";
 import HabitsTable from "../components/HabitsTable";
 console.log("on Trends");

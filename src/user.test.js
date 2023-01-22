@@ -25,9 +25,8 @@ test("getTasksData Function",async () => {
 test("ProcessTasksData Function-check if any task have been process successfully", async () => {
     await GlobalTestUser.getTasksData();
     GlobalTestUser.processTaskData(GlobalTestUser.data);
-    console.log(GlobalTestUser.dailies);
-    console.log(GlobalTestUser.habits);
-    expect(GlobalTestUser.dailies.length!==0&&GlobalTestUser.habits.length!==0).toBe(true);
+    console.log(GlobalTestUser.tasks);
+    expect(GlobalTestUser.tasks.length!==0&&GlobalTestUser.tasks.length!==0).toBe(true);
 })
 
 test("ProcessTasksData Function-Process daily", async () => {
@@ -102,7 +101,7 @@ test("ProcessTasksData Function-Process daily", async () => {
         "id": "29da4058-a00b-46b1-bb98-98c583d670a7"
     }];
     GlobalTestUser.processTaskData(GlobalTestUser.data);
-    let testDaily=GlobalTestUser.dailies.get("Daily 1")
+    let testDaily=GlobalTestUser.tasks.get("Daily 1")
     let checkName="Daily 1"===testDaily.name
     let checkUser=GlobalTestUser===testDaily.user
     let checkId="29da4058-a00b-46b1-bb98-98c583d670a7"===testDaily.id
@@ -170,7 +169,7 @@ test("ProcessTasksData Function-Process habit", async () => {
         "id": "b92eab77-a6f2-4e91-9f23-009291fd3292"
     }];
     GlobalTestUser.processTaskData(GlobalTestUser.data);
-    let testHabit=GlobalTestUser.habits.get("testHabit")
+    let testHabit=GlobalTestUser.tasks.get("testHabit")
     let checkName="testHabit"===testHabit.name
     let checkUser=GlobalTestUser===testHabit.user
     let checkId="b92eab77-a6f2-4e91-9f23-009291fd3292"===testHabit.id

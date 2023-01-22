@@ -10,6 +10,7 @@ import FormBox from "../components/forms/formBox";
 import RadioBox from "../components/forms/RadioBox";
 import LineGraph from "../components/LineGraph";
 import CheckBoxSelector from "../components/forms/CheckBoxSelector";
+import mapGetTypeList from "../utils/mapGetTypeList";
 console.log("on Trends");
 export function Trends() {
     console.log("Uselocation",useLocation().state)
@@ -33,8 +34,8 @@ export function Trends() {
             <h2>"Welcome {User.username}"</h2>
             <FormBox legend={"Select the task to display:"} optionList={
                 [
-                    <RadioSelector setState={setTask} title={"Habits"} optionsList={getNames(User.habits.values())}/>,
-                    <RadioSelector setState={setTask} title={"Dailies"} optionsList={getNames(User.dailies.values())}/>
+                    <RadioSelector setState={setTask} title={"Habits"} optionsList={getNames(mapGetTypeList(User.tasks,"habit"))}/>,
+                    <RadioSelector setState={setTask} title={"Dailies"} optionsList={getNames(mapGetTypeList(User.tasks,"daily"))}/>
                 ]}
             />
             {curTask!=="" &&
@@ -44,12 +45,12 @@ export function Trends() {
                     ]}
                 />
             }
-            {curTask!=="" && curGraph!=="" &&curTask.type==="Habits" &&
+            {curTask!=="" && curGraph!=="" &&
                 <div>
                     <FormBox legend={"Select timeframe to display"} optionList={
                         [
                             <RadioSelector setState={setTimeframe} title={"In days:"} optionsList={[7,14,30,90,180,360]}/>,
-                            <RadioSelector setState={setTimeframe} title={"Since change:"} optionsList={User.habits.get(curTask.element).getChangesList()}/>
+                            <RadioSelector setState={setTimeframe} title={"Since change:"} optionsList={User.tasks.get(curTask.element).getChangesList()}/>
                         ]}
                     />
                     <FormBox legend={"Select Days to display"} optionList={
@@ -59,22 +60,6 @@ export function Trends() {
                     />
                     <h1>{curDueDates}</h1>
                 </div>
-            }
-            {curTask!=="" && curGraph!=="" &&curTask.type==="Dailies" &&
-                <div>
-                    <FormBox legend={"Select timeframe to display"} optionList={
-                        [
-                        <RadioSelector setState={setTimeframe} title={"In days:"} optionsList={[7,14,30,90,180,360]}/>,
-                        <RadioSelector setState={setTimeframe} title={"Since change:"} optionsList={User.dailies.get(curTask.element).getChangesList()}/>
-                        ]}
-                    />
-                    <FormBox legend={"Select Days to display"} optionList={
-                        [
-                            <CheckBoxSelector curState={curDueDates} setState={setDueDates}  optionsList={["m", "t", "w", "th", "f", "s", "su"]}/>,
-                        ]}
-                    />
-                </div>
-
             }
             {curGraph.element==="Bar" && <BarGraph curTask={curTask} user={User} timeframe={curTimeframe} dueDates={curDueDates}/>}
             {curGraph.element==="Line(Moving Average)" && <LineGraph curTask={curTask} user={User} movingAverage={true} timeframe={curTimeframe} dueDates={curDueDates}/>}

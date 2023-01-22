@@ -86,7 +86,7 @@ test("modifyNote Test", async () => {
     //increase time
     jest.setTimeout(20000)
     let newNote="Testing New Note"
-    let commentTestTask=GlobalTestUser.dailies.get("Comment Test")
+    let commentTestTask=GlobalTestUser.tasks.get("Comment Test")
     let response=await commentTestTask.modifyNote(newNote)
     expect(response).toBe(true)
 })

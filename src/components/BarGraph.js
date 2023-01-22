@@ -10,19 +10,11 @@ function BarGraph({curTask,user,dueDates,timeframe={element:90}}){
     let HabitInfo=undefined
     if(curTask!==null&&curTask.element!==undefined){
         let timespan=timeframe.element
-        if(curTask.type==="Habits"){
-            currentTask=user.habits.get(curTask.element)
-            if(typeof timeframe.element==='string'){
-                timespan=diffBetweenDays(currentTask.TaskChanges.get(timeframe.element).date)
-            }
-            HabitInfo=currentTask.getCompleteHistory(timespan,currentTask.startDate,mapAllValuesEqual(dueDates) ?currentTask.dueDates:dueDates)
-        }else if(curTask.type==="Dailies"){
-            currentTask=user.dailies.get(curTask.element)
-            if(typeof timeframe.element==='string'){
-                timespan=diffBetweenDays(currentTask.TaskChanges.get(timeframe.element).date)
-            }
-            HabitInfo=currentTask.getCompleteHistory(timespan,currentTask.startDate,mapAllValuesEqual(dueDates) ?currentTask.dueDates:dueDates)
+        currentTask=user.tasks.get(curTask.element)
+        if(typeof timeframe.element==='string') {
+            timespan = diffBetweenDays(currentTask.TaskChanges.get(timeframe.element).date)
         }
+        HabitInfo=currentTask.getCompleteHistory(timespan,currentTask.startDate,mapAllValuesEqual(dueDates) ?currentTask.dueDates:dueDates)
     }
     return(
         <div>
