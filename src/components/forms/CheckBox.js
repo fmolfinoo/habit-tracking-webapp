@@ -1,12 +1,13 @@
 import React from "react";
 
-function CheckBox({title,value,setState}){
+function CheckBox({value,curState,setState}){
     const onSelect=(value)=>{
-        setState({type:title,element:value})
+        curState.set(value,!curState.get(value))
+        setState(new Map(curState))
     }
     return(
         <div class={"TaskItem"}>
-            <input type={"checkbox"} name="task" onChange={()=>onSelect(value)}/>
+            <input type={"checkbox"} onChange={()=>onSelect(value)}/>
             <label>{value}</label>
         </div>
     )

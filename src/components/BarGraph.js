@@ -4,7 +4,8 @@ import { Chart as ChartJS } from 'chart.js/auto'
 import LineGraph from "./LineGraph";
 import generateNegativeList from "../utils/generateNegativeList";
 import diffBetweenDays from "../utils/diffBetweenDays";
-function BarGraph({curTask,user,timeframe={element:90}}){
+import mapAllValuesEqual from "../utils/mapAllValuesEqual";
+function BarGraph({curTask,user,dueDates,timeframe={element:90}}){
     let currentTask=undefined
     let HabitInfo=undefined
     if(curTask!==null&&curTask.element!==undefined){
@@ -14,13 +15,13 @@ function BarGraph({curTask,user,timeframe={element:90}}){
             if(typeof timeframe.element==='string'){
                 timespan=diffBetweenDays(currentTask.TaskChanges.get(timeframe.element).date)
             }
-            HabitInfo=currentTask.getCompleteHistory(timespan,currentTask.startDate,currentTask.dueDates)
+            HabitInfo=currentTask.getCompleteHistory(timespan,currentTask.startDate,mapAllValuesEqual(dueDates) ?currentTask.dueDates:dueDates)
         }else if(curTask.type==="Dailies"){
             currentTask=user.dailies.get(curTask.element)
             if(typeof timeframe.element==='string'){
                 timespan=diffBetweenDays(currentTask.TaskChanges.get(timeframe.element).date)
             }
-            HabitInfo=currentTask.getCompleteHistory(timespan,currentTask.startDate,currentTask.dueDates)
+            HabitInfo=currentTask.getCompleteHistory(timespan,currentTask.startDate,mapAllValuesEqual(dueDates) ?currentTask.dueDates:dueDates)
         }
     }
     return(

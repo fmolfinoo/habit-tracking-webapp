@@ -3,12 +3,13 @@ import "./css/styles.css"
 import {useLocation} from "react-router";
 import Navbar from "../components/Navbar";
 import recreateUser from "../utils/recreateUser";
-import RadioSelector from "../components/RadioSelector";
+import RadioSelector from "../components/forms/RadioSelector";
 import BarGraph from "../components/BarGraph";
 import {user} from "../user";
-import FormBox from "../components/formBox";
+import FormBox from "../components/forms/formBox";
 import RadioBox from "../components/forms/RadioBox";
 import LineGraph from "../components/LineGraph";
+import CheckBoxSelector from "../components/forms/CheckBoxSelector";
 console.log("on Trends");
 export function Trends() {
     console.log("Uselocation",useLocation().state)
@@ -17,7 +18,7 @@ export function Trends() {
     const[curTask,setTask]=useState("")
     const[curGraph,setGraph]=useState("")
     const[curTimeframe,setTimeframe]=useState({element:30})
-    const[curDueDates,setDueDates]=useState()
+    const[curDueDates,setDueDates]=useState(new Map(Object.entries({"m": false, "t": false, "w": false, "th": false, "f": false, "s": false, "su": false})))
     const getNames=(list)=>{
         let accumulator=[]
         for(let e of list){
@@ -44,24 +45,40 @@ export function Trends() {
                 />
             }
             {curTask!=="" && curGraph!=="" &&curTask.type==="Habits" &&
-                <FormBox legend={"Select timeframe to display"} optionList={
+                <div>
+                    <FormBox legend={"Select timeframe to display"} optionList={
+                        [
+                            <RadioSelector setState={setTimeframe} title={"In days:"} optionsList={[7,14,30,90,180,360]}/>,
+                            <RadioSelector setState={setTimeframe} title={"Since change:"} optionsList={User.habits.get(curTask.element).getChangesList()}/>
+                        ]}
+                    />
+                    <FormBox legend={"Select Days to display"} optionList={
                     [
-                        <RadioSelector setState={setTimeframe} title={"In days:"} optionsList={[7,14,30,90,180,360]}/>,
-                        <RadioSelector setState={setTimeframe} title={"Since change:"} optionsList={User.habits.get(curTask.element).getChangesList()}/>
+                    <CheckBoxSelector curState={curDueDates} setState={setDueDates} optionsList={["m", "t", "w", "th", "f", "s", "su"]}/>,
                     ]}
-                />
+                    />
+                    <h1>{curDueDates}</h1>
+                </div>
             }
             {curTask!=="" && curGraph!=="" &&curTask.type==="Dailies" &&
-                <FormBox legend={"Select timeframe to display"} optionList={
-                    [
+                <div>
+                    <FormBox legend={"Select timeframe to display"} optionList={
+                        [
                         <RadioSelector setState={setTimeframe} title={"In days:"} optionsList={[7,14,30,90,180,360]}/>,
                         <RadioSelector setState={setTimeframe} title={"Since change:"} optionsList={User.dailies.get(curTask.element).getChangesList()}/>
-                    ]}
-                />
+                        ]}
+                    />
+                    <FormBox legend={"Select Days to display"} optionList={
+                        [
+                            <CheckBoxSelector curState={curDueDates} setState={setDueDates}  optionsList={["m", "t", "w", "th", "f", "s", "su"]}/>,
+                        ]}
+                    />
+                </div>
+
             }
-            {curGraph.element==="Bar" && <BarGraph curTask={curTask} user={User} timeframe={curTimeframe}/>}
-            {curGraph.element==="Line(Moving Average)" && <LineGraph curTask={curTask} user={User} movingAverage={true} timeframe={curTimeframe}/>}
-            {curGraph.element==="Line(Raw Data)" && <LineGraph curTask={curTask} user={User} movingAverage={false} timeframe={curTimeframe}/>}
+            {curGraph.element==="Bar" && <BarGraph curTask={curTask} user={User} timeframe={curTimeframe} dueDates={curDueDates}/>}
+            {curGraph.element==="Line(Moving Average)" && <LineGraph curTask={curTask} user={User} movingAverage={true} timeframe={curTimeframe} dueDates={curDueDates}/>}
+            {curGraph.element==="Line(Raw Data)" && <LineGraph curTask={curTask} user={User} movingAverage={false} timeframe={curTimeframe} dueDates={curDueDates}/>}
         </div>
     );
 }

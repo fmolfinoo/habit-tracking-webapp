@@ -4,7 +4,9 @@ import { Chart as ChartJS } from 'chart.js/auto'
 import generateMovingAverageList from "../utils/generateMovingAverageList";
 import generateNegativeList from "../utils/generateNegativeList";
 import diffBetweenDays from "../utils/diffBetweenDays";
-function LineGraph({curTask,user,movingAverage=false,timeframe=30}){
+import mapAllValuesEqual from "../utils/mapAllValuesEqual";
+
+function LineGraph({curTask,user,movingAverage=false,dueDates,timeframe=30}){
     let currentTask=undefined
     let HabitInfo=undefined
     if(curTask!==null&&curTask.element!==undefined){
@@ -14,13 +16,14 @@ function LineGraph({curTask,user,movingAverage=false,timeframe=30}){
             if(typeof timeframe.element==='string'){
                 timeframe.element=diffBetweenDays(currentTask.TaskChanges.get(timeframe.element).date)
             }
-            HabitInfo=currentTask.getCompleteHistory(timeframe.element,currentTask.startDate,currentTask.dueDates)
+            //We check if dueDates has any date activated if not we use default days
+            HabitInfo=currentTask.getCompleteHistory(timeframe.element,currentTask.startDate,mapAllValuesEqual(dueDates) ?currentTask.dueDates:dueDates )
         }else if(curTask.type==="Dailies"){
             currentTask=user.dailies.get(curTask.element)
             if(typeof timeframe.element==='string'){
                 timeframe.element=diffBetweenDays(currentTask.TaskChanges.get(timeframe.element).date)
             }
-            HabitInfo=currentTask.getCompleteHistory(timeframe.element,currentTask.startDate,currentTask.dueDates)
+            HabitInfo=currentTask.getCompleteHistory(timeframe.element,currentTask.startDate,currentTask.dueDates,mapAllValuesEqual(dueDates) ?currentTask.dueDates:dueDates )
         }
     }
     return(
