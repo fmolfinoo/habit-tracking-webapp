@@ -6,22 +6,21 @@ import generateNegativeList from "../utils/generateNegativeList";
 import diffBetweenDays from "../utils/diffBetweenDays";
 import mapAllValuesEqual from "../utils/mapAllValuesEqual";
 
-function LineGraph({curTask,user,movingAverage=false,dueDates,timeframe=30}){
+function LineGraph({curTask,movingAverage=false,dueDates,timeframe=30}){
     let currentTask=undefined
     let HabitInfo=undefined
-    if(curTask!==null&&curTask.element!==undefined){
-        currentTask=user.tasks.get(curTask.element)
-        if(typeof timeframe.element==='string'){
-            timeframe.element=diffBetweenDays(currentTask.TaskChanges.get(timeframe.element).date)
+    if(curTask){
+        if(typeof timeframe==='string'){
+            timeframe=diffBetweenDays(curTask.TaskChanges.get(timeframe).date)
         }
         //We check if dueDates has any date activated if not we use default days
-        HabitInfo=currentTask.getCompleteHistory(timeframe.element,currentTask.startDate,mapAllValuesEqual(dueDates) ?currentTask.dueDates:dueDates )
+        HabitInfo=curTask.getCompleteHistory(timeframe,curTask.startDate,mapAllValuesEqual(dueDates) ?curTask.dueDates:dueDates )
     }
     return(
         <div>
-            {curTask.type==="Habits" &&
+            {curTask.constructor.name==="habit" &&
                 <Line data={{
-                    labels: currentTask!==undefined ? HabitInfo.days:[],
+                    labels: curTask!==undefined ? HabitInfo.days:[],
                     datasets:[
                         {
                             label:['Positive'],
@@ -39,7 +38,7 @@ function LineGraph({curTask,user,movingAverage=false,dueDates,timeframe=30}){
                          plugins: {
                              title: {
                                  display: true,
-                                 text: typeof timeframe.element==='string' ? getTitleForChange(currentTask,timeframe.element) : curTask.element +"| For the last "+timeframe.element+" days"
+                                 text: typeof timeframe==='number' ? curTask.name +"| For the last "+timeframe+" days":getTitleForChange(curTask,timeframe)
                              },
                          },
                          responsive:true,
@@ -54,9 +53,9 @@ function LineGraph({curTask,user,movingAverage=false,dueDates,timeframe=30}){
                          }
                      }}
                 />}
-            {curTask.type==="Dailies" &&
+            {curTask.constructor.name==="daily" &&
                 <Line data={{
-                    labels: currentTask!==undefined ? HabitInfo.days:[],
+                    labels: curTask!==undefined ? HabitInfo.days:[],
                     datasets:[
                         {
                             label:['Completed'],
@@ -70,7 +69,7 @@ function LineGraph({curTask,user,movingAverage=false,dueDates,timeframe=30}){
                          plugins: {
                              title: {
                                  display: true,
-                                 text: typeof timeframe.element==='string' ? getTitleForChange(currentTask,timeframe.element) : curTask.element +"| For the last "+timeframe.element+" days"
+                                 text: typeof timeframe==='number' ? curTask.name +"| For the last "+timeframe+" days":getTitleForChange(curTask,timeframe)
                              },
                          },
                          responsive:true,
@@ -90,6 +89,7 @@ function LineGraph({curTask,user,movingAverage=false,dueDates,timeframe=30}){
     );
 }
 function getTitleForChange(currentTask,changeName){
-    return currentTask.name +" | Since Change: "+ changeName +"("+currentTask.TaskChanges.get(changeName).date.toLocaleDateString()+")"
+    console.log("changename",changeName)
+    return currentTask.name +" | Since Change: "+ changeName.name +"("+changeName.date.toLocaleDateString()+")"
 }
 export default LineGraph

@@ -5,30 +5,31 @@ import LineGraph from "./LineGraph";
 import generateNegativeList from "../utils/generateNegativeList";
 import diffBetweenDays from "../utils/diffBetweenDays";
 import mapAllValuesEqual from "../utils/mapAllValuesEqual";
-function BarGraph({curTask,user,dueDates,timeframe={element:90}}){
-    let currentTask=undefined
+function BarGraph({curTask,dueDates,timeframe=30}){
+
     let HabitInfo=undefined
-    if(curTask!==null&&curTask.element!==undefined){
-        let timespan=timeframe.element
-        currentTask=user.tasks.get(curTask.element)
-        if(typeof timeframe.element==='string') {
-            timespan = diffBetweenDays(currentTask.TaskChanges.get(timeframe.element).date)
+    if(curTask){
+        let timespan=timeframe
+        if(typeof timeframe==='string') {
+            timespan = diffBetweenDays(curTask.TaskChanges.get(timeframe).date)
         }
-        HabitInfo=currentTask.getCompleteHistory(timespan,currentTask.startDate,mapAllValuesEqual(dueDates) ?currentTask.dueDates:dueDates)
+        HabitInfo=curTask.getCompleteHistory(timespan,curTask.startDate,mapAllValuesEqual(dueDates) ? curTask.dueDates:dueDates)
+        console.log(HabitInfo)
     }
+    console.log("On bar habit info",HabitInfo)
     return(
         <div>
-            {curTask.type==="Habits" &&
+            {curTask.constructor.name==="habit" &&
                 <Bar data={{
-                    labels: currentTask!==undefined ? HabitInfo.days:[],
+                    labels: curTask!==undefined ? HabitInfo.days:[],
                     datasets:[
                         {
                             label:['Positive'],
-                            data:currentTask!==undefined ? HabitInfo.positiveData:[]
+                            data:curTask!==undefined ? HabitInfo.positiveData:[]
                         },
                         {
                             label:['Negative'],
-                            data:currentTask!==undefined ? generateNegativeList(HabitInfo.negativeData):[]
+                            data:curTask!==undefined ? generateNegativeList(HabitInfo.negativeData):[]
                         }
                     ]
                 }}
@@ -38,7 +39,7 @@ function BarGraph({curTask,user,dueDates,timeframe={element:90}}){
                          plugins: {
                              title: {
                                  display: true,
-                                 text: typeof timeframe.element==='string' ? getTitleForChange(currentTask,timeframe.element): curTask.element +"| For the last "+timeframe.element+" days"
+                                 text: typeof timeframe==='number' ? curTask.name +"| For the last "+timeframe+" days":getTitleForChange(curTask,timeframe)
                              },
                          },
                          responsive:true,
@@ -53,13 +54,13 @@ function BarGraph({curTask,user,dueDates,timeframe={element:90}}){
                         }
                 }}
         />}
-            {curTask.type==="Dailies" &&
+            {curTask.constructor.name==="daily" &&
                 <Bar data={{
-                    labels: currentTask!==undefined ? HabitInfo.days:[],
+                    labels: curTask!==undefined ? HabitInfo.days:[],
                     datasets:[
                         {
                             label:['Completed'],
-                            data:currentTask!==undefined ? HabitInfo.data:[]
+                            data:curTask!==undefined ? HabitInfo.data:[]
                         }
                     ]
                 }}
@@ -69,7 +70,7 @@ function BarGraph({curTask,user,dueDates,timeframe={element:90}}){
                          plugins: {
                              title: {
                                  display: true,
-                                 text: typeof timeframe.element==='string' ? getTitleForChange(currentTask,timeframe.element) : curTask.element +"| For the last "+timeframe.element+" days"
+                                 text: typeof timeframe==='number' ? curTask.name +"| For the last "+timeframe+" days":getTitleForChange(curTask,timeframe)
                              },
                          },
                          responsive:true,
@@ -88,6 +89,6 @@ function BarGraph({curTask,user,dueDates,timeframe={element:90}}){
     );
 }
 function getTitleForChange(currentTask,changeName){
-    return currentTask.name +" | Since Change: "+ changeName +"("+currentTask.TaskChanges.get(changeName).date.toLocaleDateString()+")"
+    return currentTask.name +" | Since Change: "+ changeName.name +"("+changeName.date.toLocaleDateString()+")"
 }
 export default BarGraph

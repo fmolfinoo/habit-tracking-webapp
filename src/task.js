@@ -96,7 +96,7 @@ export class task{
     getChangesList(){
         let changesList=[]
         this.TaskChanges.forEach((values)=>{
-            changesList.push(values.name)
+            changesList.push(values)
         })
         return changesList
     }

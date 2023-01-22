@@ -1,13 +1,14 @@
 import React from "react";
 
-function RadioBox({title,value,setState}){
+function RadioBox({name,value,setState}){
     const onSelect=(value)=>{
-        setState({type:title,element:value})
+        console.log(name,value)
+        setState(value)
     }
     return(
         <div class={"TaskItem"}>
             <input type={"radio"} name="task" onChange={()=>onSelect(value)}/>
-            <label>{value}</label>
+            <label>{name}</label>
         </div>
     )
 }

@@ -16,9 +16,9 @@ export function Trends() {
     console.log("Uselocation",useLocation().state)
     let User=recreateUser(useLocation().state.user)
     //var curTask=document.querySelector('input[name="task"]:checked');
-    const[curTask,setTask]=useState("")
+    const[curTask,setTask]=useState(undefined)
     const[curGraph,setGraph]=useState("")
-    const[curTimeframe,setTimeframe]=useState({element:30})
+    const[curTimeframe,setTimeframe]=useState(30)
     const[curDueDates,setDueDates]=useState(new Map(Object.entries({"m": false, "t": false, "w": false, "th": false, "f": false, "s": false, "su": false})))
     const getNames=(list)=>{
         let accumulator=[]
@@ -34,23 +34,23 @@ export function Trends() {
             <h2>"Welcome {User.username}"</h2>
             <FormBox legend={"Select the task to display:"} optionList={
                 [
-                    <RadioSelector setState={setTask} title={"Habits"} optionsList={getNames(mapGetTypeList(User.tasks,"habit"))}/>,
-                    <RadioSelector setState={setTask} title={"Dailies"} optionsList={getNames(mapGetTypeList(User.tasks,"daily"))}/>
+                    <RadioSelector setState={setTask} title={"Habits"} getName={(e)=>{ return e.name}} optionsList={mapGetTypeList(User.tasks,"habit")}/>,
+                    <RadioSelector setState={setTask} title={"Dailies"} getName={(e)=>{ return e.name}} optionsList={mapGetTypeList(User.tasks,"daily")}/>
                 ]}
             />
-            {curTask!=="" &&
+            {curTask!==undefined &&
                 <FormBox legend={"Select the type of bar graph to display"} optionList={
                     [
                         <RadioSelector setState={setGraph} optionsList={["Bar","Line(Moving Average)","Line(Raw Data)"]}/>,
                     ]}
                 />
             }
-            {curTask!=="" && curGraph!=="" &&
+            {curTask!==undefined && curGraph!=="" &&
                 <div>
                     <FormBox legend={"Select timeframe to display"} optionList={
                         [
                             <RadioSelector setState={setTimeframe} title={"In days:"} optionsList={[7,14,30,90,180,360]}/>,
-                            <RadioSelector setState={setTimeframe} title={"Since change:"} optionsList={User.tasks.get(curTask.element).getChangesList()}/>
+                            <RadioSelector setState={setTimeframe} getName={(e)=>{ return e.name+" ("+e.date.toLocaleDateString()+")"}} title={"Since change:"} optionsList={curTask.getChangesList()}/>
                         ]}
                     />
                     <FormBox legend={"Select Days to display"} optionList={
@@ -58,12 +58,11 @@ export function Trends() {
                     <CheckBoxSelector curState={curDueDates} setState={setDueDates} optionsList={["m", "t", "w", "th", "f", "s", "su"]}/>,
                     ]}
                     />
-                    <h1>{curDueDates}</h1>
                 </div>
             }
-            {curGraph.element==="Bar" && <BarGraph curTask={curTask} user={User} timeframe={curTimeframe} dueDates={curDueDates}/>}
-            {curGraph.element==="Line(Moving Average)" && <LineGraph curTask={curTask} user={User} movingAverage={true} timeframe={curTimeframe} dueDates={curDueDates}/>}
-            {curGraph.element==="Line(Raw Data)" && <LineGraph curTask={curTask} user={User} movingAverage={false} timeframe={curTimeframe} dueDates={curDueDates}/>}
+            {curGraph==="Bar" && <BarGraph curTask={curTask} timeframe={curTimeframe} dueDates={curDueDates}/>}
+            {curGraph==="Line(Moving Average)" && <LineGraph curTask={curTask} movingAverage={true} timeframe={curTimeframe} dueDates={curDueDates}/>}
+            {curGraph==="Line(Raw Data)" && <LineGraph curTask={curTask} movingAverage={false} timeframe={curTimeframe} dueDates={curDueDates}/>}
         </div>
     );
 }
