@@ -14,13 +14,13 @@ function BarGraph({curTask,user,timeframe={element:90}}){
             if(typeof timeframe.element==='string'){
                 timespan=diffBetweenDays(currentTask.TaskChanges.get(timeframe.element).date)
             }
-            HabitInfo=currentTask.getCompleteHistory(timespan,currentTask.startDate)
+            HabitInfo=currentTask.getCompleteHistory(timespan,currentTask.startDate,currentTask.dueDates)
         }else if(curTask.type==="Dailies"){
             currentTask=user.dailies.get(curTask.element)
             if(typeof timeframe.element==='string'){
                 timespan=diffBetweenDays(currentTask.TaskChanges.get(timeframe.element).date)
             }
-            HabitInfo=currentTask.getCompleteHistory(timespan,currentTask.startDate)
+            HabitInfo=currentTask.getCompleteHistory(timespan,currentTask.startDate,currentTask.dueDates)
         }
     }
     return(

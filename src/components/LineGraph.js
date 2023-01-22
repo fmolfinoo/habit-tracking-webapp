@@ -10,16 +10,17 @@ function LineGraph({curTask,user,movingAverage=false,timeframe=30}){
     if(curTask!==null&&curTask.element!==undefined){
         if(curTask.type==="Habits"){
             currentTask=user.habits.get(curTask.element)
+            console.log("constructor name",currentTask.constructor.name)
             if(typeof timeframe.element==='string'){
                 timeframe.element=diffBetweenDays(currentTask.TaskChanges.get(timeframe.element).date)
             }
-            HabitInfo=currentTask.getCompleteHistory(timeframe.element,currentTask.startDate)
+            HabitInfo=currentTask.getCompleteHistory(timeframe.element,currentTask.startDate,currentTask.dueDates)
         }else if(curTask.type==="Dailies"){
             currentTask=user.dailies.get(curTask.element)
             if(typeof timeframe.element==='string'){
                 timeframe.element=diffBetweenDays(currentTask.TaskChanges.get(timeframe.element).date)
             }
-            HabitInfo=currentTask.getCompleteHistory(timeframe.element,currentTask.startDate)
+            HabitInfo=currentTask.getCompleteHistory(timeframe.element,currentTask.startDate,currentTask.dueDates)
         }
     }
     return(

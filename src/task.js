@@ -1,3 +1,5 @@
+import getDateFromString from "./utils/getDateFromString";
+
 export class task{
     constructor(name,user,id,notes,startDate) {
         this.name=name;
@@ -6,7 +8,7 @@ export class task{
         this.notes=notes;
         this.history=new Map();
         this.TaskChanges=new Map();
-        this.startDate=new Date(startDate)
+        this.startDate=getDateFromString(startDate)
         this.extractChanges(this.notes);
     }
 
@@ -121,7 +123,7 @@ export class habit extends task{
             this.history.set(new Date(e.date).toLocaleDateString(), {Positive: e.scoredUp ,Negative:e.scoredDown})
         })
     }
-    getAverage(timeFrame,startDate=this.startDate,now=new Date(new Date(Date.now()).toLocaleDateString()),dueDates=new Map(Object.entries({"m": true, "t": true, "w": true, "th": true, "f": true, "s": true, "su": true}))){
+    getAverage(timeFrame,startDate=this.startDate,dueDates=new Map(Object.entries({"m": true, "t": true, "w": true, "th": true, "f": true, "s": true, "su": true})),now=new Date(new Date(Date.now()).toLocaleDateString())){
         let startOfTimeFrame=new Date(now.toLocaleDateString())
         startOfTimeFrame.setDate(startOfTimeFrame.getDate()-timeFrame)
         let currentDate
@@ -165,7 +167,7 @@ export class habit extends task{
      * @param {Map<string,string>}dueDates
      * @return {{positiveData: *[], negativeData: *[], days: *[]}}
      */
-    getCompleteHistory(timeFrame,startDate=this.startDate,now=new Date(new Date(Date.now()).toLocaleDateString()),dueDates=new Map(Object.entries({"m": true, "t": true, "w": true, "th": true, "f": true, "s": true, "su": true}))){
+    getCompleteHistory(timeFrame,startDate=this.startDate,dueDates=new Map(Object.entries({"m": true, "t": true, "w": true, "th": true, "f": true, "s": true, "su": true})),now=new Date(new Date(Date.now()).toLocaleDateString())){
         let startOfTimeFrame=new Date(now.toLocaleDateString())
         startOfTimeFrame.setDate(startOfTimeFrame.getDate()-timeFrame)
         let currentDate
@@ -235,7 +237,7 @@ export class daily extends task{
      * @param {Map<string,boolean>}dueDates
      * @return {number}
      */
-    getAverage(timeFrame,startDate=this.startDate,now=new Date(new Date(Date.now()).toLocaleDateString()),dueDates=this.dueDates){
+    getAverage(timeFrame,startDate=this.startDate,dueDates=this.dueDates,now=new Date(new Date(Date.now()).toLocaleDateString())){
         let startOfTimeFrame=new Date(now.toLocaleDateString())
         startOfTimeFrame.setDate(startOfTimeFrame.getDate()-timeFrame)
         let currentDate
@@ -276,7 +278,7 @@ export class daily extends task{
      * @param {Map<string,boolean>}dueDates
      * @return {{data: *[], days: *[]}}
      */
-    getCompleteHistory(timeFrame,startDate=this.startDate,now=new Date(new Date(Date.now()).toLocaleDateString()),dueDates=this.dueDates){
+    getCompleteHistory(timeFrame,startDate=this.startDate,dueDates=this.dueDates,now=new Date(new Date(Date.now()).toLocaleDateString())){
         let startOfTimeFrame=new Date(now.toLocaleDateString())
         startOfTimeFrame.setDate(startOfTimeFrame.getDate()-timeFrame)
         let currentDate
