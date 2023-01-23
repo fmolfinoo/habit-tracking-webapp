@@ -1,5 +1,5 @@
-import {numToPercentage} from "../utils/numToPercentage";
-import mapGetTypeList from "../utils/mapGetTypeList";
+import {numToPercentage} from "../../utils/numToPercentage";
+import mapGetTypeList from "../../utils/mapGetTypeList";
 function DailiesTable({user}){
     let dailiesTable=[];
     for(let e of mapGetTypeList(user.tasks,"daily")){

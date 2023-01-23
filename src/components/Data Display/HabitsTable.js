@@ -1,6 +1,6 @@
-import "../pages/css/table.css"
-import {numToPercentage} from "../utils/numToPercentage";
-import mapGetTypeList from "../utils/mapGetTypeList";
+import "../../pages/css/table.css"
+import {numToPercentage} from "../../utils/numToPercentage";
+import mapGetTypeList from "../../utils/mapGetTypeList";
 function HabitsTable({user}){
     let habitsTable=[];
     for(let e of mapGetTypeList(user.tasks,"habit")){

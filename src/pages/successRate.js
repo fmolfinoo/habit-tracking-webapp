@@ -4,8 +4,8 @@ import "./css/table.css"
 import {useLocation} from "react-router";
 import Navbar from "../components/Navbar";
 import recreateUser from "../utils/recreateUser";
-import DailiesTable from "../components/DailiesTable";
-import HabitsTable from "../components/HabitsTable";
+import DailiesTable from "../components/Data Display/DailiesTable";
+import HabitsTable from "../components/Data Display/HabitsTable";
 console.log("on Trends");
 export function SuccessRate() {
     console.log("Uselocation",useLocation().state)
