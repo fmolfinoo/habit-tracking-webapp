@@ -4,18 +4,17 @@ import {useLocation} from "react-router";
 import Navbar from "../components/Navbar";
 import recreateUser from "../utils/recreateUser";
 import RadioSelector from "../components/forms/RadioSelector";
-import BarGraph from "../components/BarGraph";
+import BarGraph from "../components/Data Display/BarGraph";
 import {user} from "../user";
 import FormBox from "../components/forms/formBox";
 import RadioBox from "../components/forms/RadioBox";
-import LineGraph from "../components/LineGraph";
+import LineGraph from "../components/Data Display/LineGraph";
 import CheckBoxSelector from "../components/forms/CheckBoxSelector";
 import mapGetTypeList from "../utils/mapGetTypeList";
 console.log("on Trends");
 export function Trends() {
     console.log("Uselocation",useLocation().state)
     let User=recreateUser(useLocation().state.user)
-    //var curTask=document.querySelector('input[name="task"]:checked');
     const[curTask,setTask]=useState(undefined)
     const[curGraph,setGraph]=useState("")
     const[curTimeframe,setTimeframe]=useState(30)
