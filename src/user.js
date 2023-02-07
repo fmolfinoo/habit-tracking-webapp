@@ -56,6 +56,7 @@ export class user{
         if(response.success) {
             this.data = response.data;
         }
+        console.log(response)
         return response.success;
 
     }
@@ -69,6 +70,18 @@ export class user{
                 this.tasks.set(task.text,h)
             }
         })
+    }
+
+    async refresh(){
+        //We get the new data from server
+        let success=await this.getTasksData()
+        if(success){
+            this.processTaskData(this.data)
+        }else{
+            alert("Server Communication Error:Failed to fetch user Data")
+        }
+        //We save the current user data on Session Storage for recreation if the page refresh
+        window.sessionStorage.setItem("user",JSON.stringify(this))
     }
 
 }

@@ -9,7 +9,6 @@ import {user} from "../user";
  */
 function recreateUser(User){
     if(User===undefined||User===null||User.constructor.name!=="user"){
-        console.log("user recreated")
         let userData=JSON.parse(sessionStorage.getItem("user"));
         User=new user(userData.username,userData.password,userData.id,userData.apiToken,userData.data)
         User.processTaskData(User.data)

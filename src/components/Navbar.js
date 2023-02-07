@@ -9,16 +9,3 @@ export default function Navbar(state) {
         </ul>
     </nav>
 }
-    /*
-    function CustomLink({to,children,savedState,...props}){
-        const resolvePath=useResolvedPath(to)
-        const isActive=useMatch({path:resolvePath.pathname,end:true})
-        return(
-            <div className={isActive? "active":""}>
-                <Link to={to}{...props} state={savedState}>
-                    {children}
-                </Link>
-            </div>
-        )
-    }
-} */

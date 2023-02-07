@@ -4,10 +4,14 @@
  * @return {String}
  */
 function getDateUtcWithoutTime(date){
-    let month=date.getUTCMonth()+1
+    let month=date.getMonth()+1
+    let day=date.getDate()
     if(month < 10) {
         month= "0" + month;
     }
-    return date.getUTCFullYear()+"-"+(month)+"-"+date.getUTCDate();
+    if(day < 10) {
+        day= "0" + day;
+    }
+    return date.getFullYear()+"-"+(month)+"-"+day;
 }export default getDateUtcWithoutTime
 

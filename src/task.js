@@ -1,4 +1,5 @@
 import getDateFromString from "./utils/getDateFromString";
+import getDateUtcWithoutTime from "./utils/getDateUtcWithoutTime";
 
 export class task{
     constructor(name,user,id,notes,startDate) {
@@ -41,24 +42,55 @@ export class task{
         });
 
     }
-    async addTaskChange(name){
-        let now=new Date(Date.now())
-        let changeDate=new Date(now.toLocaleDateString());
+    async addTaskChange(changeName,changeDate){
+        if(this.TaskChanges.has(changeName)) {
+            alert("ERROR:You cannot put the name of change that already exists")
+            return
+        }
         //We add 1 to getUTCMonth because it counts month starting from 0 so january is 0
-        let changeString="[comment]: # (CHANGE:"+name+","+changeDate.getUTCFullYear()+"-"+(changeDate.getUTCMonth()+1)+"-"+changeDate.getUTCDate()+")";
-        let changeObj={name : name ,date:changeDate, copy:changeString}
-        this.TaskChanges.set(name,changeObj)
+        let changeString="[comment]: # (CHANGE:"+changeName+","+changeDate+")";
+        let changeObj={name : changeName ,date:getDateFromString(changeDate), copy:changeString}
         if(this.TaskChanges.size===0){
             this.notes=this.notes+"\n"+"[comment]: # (BELOW THIS COMMENT LIES ALL THE CHANGES INFORMATION RELATED TO THIS TASK DON'T DELETE OR WRITE NOTES BELOW THIS MESSAGE)"
         }
+        this.TaskChanges.set(changeName,changeObj)
         //We add a new line and append the change to the end of the note
         this.notes=this.notes+"\n"+changeString
-        //await this.modifyNote(this.notes)
+        let success=await this.modifyNote(this.notes)
+        if(!success){
+            alert("Communication with Server Failed")
+        }
     }
+    async modifyTaskChange(changeObj,newName,newDate){
+        if(changeObj.name!==newName&&this.TaskChanges.has(newName)) {
+            alert("ERROR:You cannot put the name of change that already exists")
+            return
+        }
+        //We delete the old key from the map
+        this.TaskChanges.delete(changeObj.name)
+        let changeString="[comment]: # (CHANGE:"+newName+","+newDate+")";
+        changeObj.name=newName
+        changeObj.date=getDateFromString(newDate)
+        //we delete the change record of the note
+        this.notes=this.notes.replace(changeObj.copy,"")
+        //we add the new change record
+        changeObj.copy=changeString
+        this.notes=this.notes+changeString
+        // we add the new key to the map
+        this.TaskChanges.set(changeObj.name,changeObj)
+        let success=await this.modifyNote(this.notes)
+        if(!success){
+            alert("Communication with Server Failed")
+        }
+    }
+
     async removeTaskChange(name){
         this.notes=this.notes.replace(this.TaskChanges.get(name).copy,"")
-        //await this.modifyNote(this.notes)
         this.TaskChanges.delete(name)
+        let success =await this.modifyNote(this.notes)
+        if(!success){
+            alert("Communication with Server Failed")
+        }
     }
     //This function will replace the current note of the task on the server for the input string. And update the stored notes
     async modifyNote(note){
