@@ -11,7 +11,6 @@ import RadioBox from "../components/forms/RadioBox";
 import LineGraph from "../components/Data Display/LineGraph";
 import CheckBoxSelector from "../components/forms/CheckBoxSelector";
 import mapGetTypeList from "../utils/mapGetTypeList";
-console.log("on Trends");
 export function Trends() {
     console.log("Uselocation",useLocation().state)
     let User=recreateUser(useLocation().state.user)

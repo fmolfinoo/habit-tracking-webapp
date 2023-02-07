@@ -81,6 +81,7 @@ export class user{
             alert("Server Communication Error:Failed to fetch user Data")
         }
         //We save the current user data on Session Storage for recreation if the page refresh
+        console.log(this)
         window.sessionStorage.setItem("user",JSON.stringify(this))
     }
 

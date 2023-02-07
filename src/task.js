@@ -50,7 +50,8 @@ export class task{
         //We add 1 to getUTCMonth because it counts month starting from 0 so january is 0
         let changeString="[comment]: # (CHANGE:"+changeName+","+changeDate+")";
         let changeObj={name : changeName ,date:getDateFromString(changeDate), copy:changeString}
-        if(this.TaskChanges.size===0){
+        //we check if there is no other chamges and the warning message have not been added before
+        if(this.TaskChanges.size===0&&!this.notes.includes("[comment]: # (BELOW THIS COMMENT LIES ALL THE CHANGES INFORMATION RELATED TO THIS TASK DON'T DELETE OR WRITE NOTES BELOW THIS MESSAGE)")){
             this.notes=this.notes+"\n"+"[comment]: # (BELOW THIS COMMENT LIES ALL THE CHANGES INFORMATION RELATED TO THIS TASK DON'T DELETE OR WRITE NOTES BELOW THIS MESSAGE)"
         }
         this.TaskChanges.set(changeName,changeObj)
@@ -58,8 +59,10 @@ export class task{
         this.notes=this.notes+"\n"+changeString
         let success=await this.modifyNote(this.notes)
         if(!success){
-            alert("Communication with Server Failed")
+            alert("Communication with Server Failed changes could not be saved")
         }
+        //every time we make a change we have to save the change into the user
+
     }
     async modifyTaskChange(changeObj,newName,newDate){
         if(changeObj.name!==newName&&this.TaskChanges.has(newName)) {
@@ -118,6 +121,8 @@ export class task{
         //If we get a positive response from server we assign the new note to the task
         if(response.success) {
             this.notes=response.data.notes;
+            //we save the new state into local storage
+            window.sessionStorage.setItem("user",JSON.stringify(this.user));
         }
         return response.success;
     }

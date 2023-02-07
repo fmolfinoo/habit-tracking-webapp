@@ -22,7 +22,6 @@ export function CreateChange() {
         setCurChange(change)
         setCurDate(getDateUtcWithoutTime(change.date))
         setName(change.name)
-        window.sessionStorage.setItem("user",JSON.stringify(User))
         console.log(curTask.getChangesList())
     }
 
