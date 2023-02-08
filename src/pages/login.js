@@ -1,6 +1,7 @@
 import React , {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {user} from "../user";
+import "../pages/css/login.css"
 
 function Login(){
     let User = undefined;
@@ -27,18 +28,19 @@ function Login(){
     }
     return (
         <form onSubmit={submitHandler} >
+            <h1>Habitica Habit Tracker Tool</h1>
             <div className={"form-inner"}>
                 <h2>Login</h2>
                 {/*ERROR*/}
                 <div className={"form-group"}>
                     <label htmlFor={"name"}>Name:</label>
-                    <input type={"text"} name={"username"} id={"username"} onChange={e=>setDetails({...details,username:e.target.value})}/>
+                    <input className={"text-input"} type={"text"} name={"username"} id={"username"} onChange={e=>setDetails({...details,username:e.target.value})}/>
                 </div>
                 <div className={"form-group"}>
                     <label htmlFor={"password"}>Password:</label>
-                    <input type={"password"} name={"password"} id={"password"}  onChange={e=>{setDetails({...details,password:e.target.value})} }/>
+                    <input className={"text-input"} type={"password"} name={"password"} id={"password"}  onChange={e=>{setDetails({...details,password:e.target.value})} }/>
                 </div>
-                <input type={"submit"} value={"LOGIN"}/>
+                <input className={"button"} type={"submit"} value={"LOGIN"}/>
             </div>
         </form>
     )

@@ -1,5 +1,4 @@
-import React , {useState,useEffect} from "react";
-import "./css/styles.css"
+import React from "react";
 import "./css/table.css"
 import {useLocation} from "react-router";
 import Navbar from "../components/Navbar";
@@ -8,13 +7,11 @@ import DailiesTable from "../components/Data Display/DailiesTable";
 import HabitsTable from "../components/Data Display/HabitsTable";
 console.log("on Trends");
 export function SuccessRate() {
-    console.log("Uselocation",useLocation().state)
     let User=recreateUser(useLocation().state.user)
     return (
         <div >
             <Navbar user={User}/>
-            <h2>On Success Rate</h2>
-            <h2>"Welcome {User.username}"</h2>
+            <h1>On Success Rate</h1>
             <h2>Dailies Information</h2>
             <DailiesTable user={User}/>
             <h2>Habits Information</h2>

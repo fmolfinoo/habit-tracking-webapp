@@ -1,22 +1,18 @@
-import {Link, useMatch, useNavigate, useResolvedPath} from "react-router-dom";
-import recreateUser from "../utils/recreateUser";
-
-export default function Navbar(state,user) {
-    const navigate = useNavigate();
-    let User=recreateUser(sessionStorage.getItem("user"))
+import {Link} from "react-router-dom";
+import './css/Navbar.css'
+export default function Navbar({user}) {
     const reset=async () => {
         alert("Refreshing Data")
-        await User.refresh();
-        //reload page
-        //navigate(0)
+        await user.refresh();
+        window.location.reload(true)
     }
     return <nav className={"nav"}>
 
         <ul>
             <li><button className="reset" onClick={reset}>Refresh Data</button></li>
-            <li><Link to={"/SuccessRate"} state={state}>Success Rate</Link></li>
-            <li><Link to={"/calendar"}  state={state}>Calendar</Link></li>
-            <li><Link to={"/trends"} state={state}>Trends</Link></li>
+            <li><Link to={"/change"}  state={user}>Modify Changes</Link></li>
+            <li><Link to={"/trends"} state={user}>Trends</Link></li>
+            <li><Link to={"/SuccessRate"} state={user}>Success Rate</Link></li>
         </ul>
     </nav>
 }

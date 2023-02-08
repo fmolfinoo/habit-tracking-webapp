@@ -1,7 +1,5 @@
-import React , {useState,useEffect} from "react";
-import {Bar, Line} from "react-chartjs-2";
-import { Chart as ChartJS } from 'chart.js/auto'
-import LineGraph from "./LineGraph";
+import React from "react";
+import {Bar} from "react-chartjs-2";
 import generateNegativeList from "../../utils/generateNegativeList";
 import diffBetweenDays from "../../utils/diffBetweenDays";
 import mapAllValuesEqual from "../../utils/mapAllValuesEqual";

@@ -1,19 +1,15 @@
 import React , {useState,useEffect} from "react";
-import "./css/styles.css"
 import {useLocation} from "react-router";
 import Navbar from "../components/Navbar";
 import recreateUser from "../utils/recreateUser";
-import {useNavigate} from "react-router-dom";
-import Calendar from "react-calendar";
-import "./css/calendar.css"
+import "./css/change.css"
 import getDateUtcWithoutTime from "../utils/getDateUtcWithoutTime";
 import RadioSelector from "../components/forms/RadioSelector";
 import mapGetTypeList from "../utils/mapGetTypeList";
 import FormBox from "../components/forms/formBox";
-import CheckBoxSelector from "../components/forms/CheckBoxSelector";
-import getDateFromString from "../utils/getDateFromString";
+
 export function CreateChange() {
-    let User=recreateUser(sessionStorage.getItem("user"))
+    let User=recreateUser(useLocation().state.user)
     const[curTask,setTask]=useState()
     const[curDate,setCurDate]=useState(getDateUtcWithoutTime(new Date(Date.now())))
     const[curChange,setCurChange]=useState()
@@ -26,7 +22,12 @@ export function CreateChange() {
     }
 
     const createHandler=async (event) => {
+        //if the name is empty we return nothing
         event.preventDefault()
+        if(curName===""){
+            return
+        }
+
         curTask.addTaskChange(curName, curDate)
         //We deselect radio button and reset the curChange value after every form submission
         const radioButtons = document.querySelectorAll("input[type='radio'][name='Change']");
@@ -50,7 +51,11 @@ export function CreateChange() {
         console.log("change deleted=", curTask.getChangesList())
     }
     const modifyHandler=async (event) => {
+        //if the name is empty we return nothing
         event.preventDefault()
+        if(curName===""|| curName===curChange.name){
+            return
+        }
         curTask.modifyTaskChange(curChange, curName, curDate)
         //We deselect radio button and reset the curChange value after every form submission
         const radioButtons = document.querySelectorAll("input[type='radio'][name='Change']");
@@ -63,8 +68,10 @@ export function CreateChange() {
 
     }
     return(
-        <div>
+        <div className={"body"}>
             <Navbar user={User}/>
+            <h1>On calendar</h1>
+            <div className={"menu"}>
             <FormBox legend={"Select task:"} optionList={
                 [
                     <RadioSelector group={"task"} setState={setTask} title={"Habits"} getName={(e)=>{ return e.name}} optionsList={mapGetTypeList(User.tasks,"habit")}/>,
@@ -81,8 +88,9 @@ export function CreateChange() {
                     />
                 </div>
             }
+            </div>
             {curChange!==undefined&&
-                <div>
+                <div className={"change-input"}>
                     <input type="date" value={curDate} onChange={e=>{setCurDate(e.target.value)}}/>
                     <input type="text" value={curName} onChange={e=>{setName(e.target.value)}}/>
                     {/* We check if we are on the create change option*/}
@@ -105,8 +113,6 @@ export function CreateChange() {
 
                 </div>
             }
-            <h2>On calendar</h2>
-            <h2>"Welcome {User.username}"</h2>
 
         </div>
     );

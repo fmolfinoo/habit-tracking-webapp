@@ -2,7 +2,7 @@ import RadioSelector from "./RadioSelector";
 import React from "react";
 function FormBox ({legend,optionList,style="optionList"}) {
     return(
-    <form>
+    <form className={"form-box"}>
         <fieldset>
             <legend>{legend}</legend>
             <div className={style}>

@@ -1,0 +1,36 @@
+body{
+    background: linear-gradient(90deg ,#e7eaf6,#a2a8d3);
+}
+h2{
+    text-align: center;
+    font-family: 'Amatic SC', cursive;
+    font-size:200%;
+}
+h1{
+    text-align: center;
+    font-family: 'Amatic SC', cursive;
+    font-size:250%;
+}
+.menu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    padding: 20px;
+
+}
+
+.menu .form-box {
+    justify-content: space-around;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 20px;
+    padding: 20px;
+    background-color: #38598b;
+    border-radius: 10px;
+}
+legend{
+    font-size: 120%;
+}
+

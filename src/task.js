@@ -1,5 +1,4 @@
 import getDateFromString from "./utils/getDateFromString";
-import getDateUtcWithoutTime from "./utils/getDateUtcWithoutTime";
 
 export class task{
     constructor(name,user,id,notes,startDate) {
@@ -61,7 +60,7 @@ export class task{
         if(!success){
             alert("Communication with Server Failed changes could not be saved")
         }
-        //every time we make a change we have to save the change into the user
+        console.log("Current Changes",this.TaskChanges)
 
     }
     async modifyTaskChange(changeObj,newName,newDate){
@@ -85,6 +84,7 @@ export class task{
         if(!success){
             alert("Communication with Server Failed")
         }
+        console.log("Current Changes",this.TaskChanges)
     }
 
     async removeTaskChange(name){
@@ -94,6 +94,7 @@ export class task{
         if(!success){
             alert("Communication with Server Failed")
         }
+        console.log("Current Changes",this.TaskChanges)
     }
     //This function will replace the current note of the task on the server for the input string. And update the stored notes
     async modifyNote(note){
@@ -122,7 +123,7 @@ export class task{
         if(response.success) {
             this.notes=response.data.notes;
             //we save the new state into local storage
-            window.sessionStorage.setItem("user",JSON.stringify(this.user));
+            await this.user.refresh();
         }
         return response.success;
     }
