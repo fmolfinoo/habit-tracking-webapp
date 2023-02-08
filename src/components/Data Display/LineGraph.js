@@ -1,5 +1,6 @@
 import React  from "react";
 import {Line} from "react-chartjs-2";
+// noinspection ES6UnusedImports
 import { Chart as ChartJS } from 'chart.js/auto'
 import generateMovingAverageList from "../../utils/generateMovingAverageList";
 import generateNegativeList from "../../utils/generateNegativeList";
@@ -7,16 +8,15 @@ import diffBetweenDays from "../../utils/diffBetweenDays";
 import mapAllValuesEqual from "../../utils/mapAllValuesEqual";
 
 function LineGraph({curTask,movingAverage=false,dueDates,timeframe=30}){
-    let currentTask=undefined
     let HabitInfo=undefined
     if(curTask){
-        console.log(timeframe)
         //To fix timeframe for changes
-        if(typeof timeframe!=='string'){
-            timeframe=diffBetweenDays(curTask.TaskChanges.get(timeframe).date)
+        let timespan=timeframe
+        if(typeof timeframe!=='number'){
+            timespan=diffBetweenDays(timeframe.date)
         }
         //We check if dueDates has any date activated if not we use default days
-        HabitInfo=curTask.getCompleteHistory(timeframe,curTask.startDate,mapAllValuesEqual(dueDates) ?curTask.dueDates:dueDates )
+        HabitInfo=curTask.getCompleteHistory(timespan,curTask.startDate,mapAllValuesEqual(dueDates) ?curTask.dueDates:dueDates )
     }
     return(
         <div>
@@ -91,7 +91,6 @@ function LineGraph({curTask,movingAverage=false,dueDates,timeframe=30}){
     );
 }
 function getTitleForChange(currentTask,changeName){
-    console.log("changename",changeName)
     return currentTask.name +" | Since Change: "+ changeName.name +"("+changeName.date.toLocaleDateString()+")"
 }
 export default LineGraph

@@ -5,7 +5,7 @@ function CheckBox({value,curState,setState}){
         setState(new Map(curState))
     }
     return(
-        <div class={"TaskItem"}>
+        <div className={"TaskItem"}>
             <input type={"checkbox"} onChange={()=>onSelect(value)}/>
             <label>{value}</label>
         </div>

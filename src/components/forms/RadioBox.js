@@ -2,7 +2,6 @@ import React from "react";
 
 function RadioBox({name,value,setState,group}){
     const onSelect=(value)=>{
-        console.log(name,value)
         setState(value)
     }
     return(

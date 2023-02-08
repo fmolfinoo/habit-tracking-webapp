@@ -4,12 +4,11 @@ import generateNegativeList from "../../utils/generateNegativeList";
 import diffBetweenDays from "../../utils/diffBetweenDays";
 import mapAllValuesEqual from "../../utils/mapAllValuesEqual";
 function BarGraph({curTask,dueDates,timeframe=30}){
-
     let HabitInfo=undefined
-    if(curTask){
+    if(curTask && timeframe){
         let timespan=timeframe
-        if(typeof timeframe==='string') {
-            timespan = diffBetweenDays(curTask.TaskChanges.get(timeframe).date)
+        if(typeof timeframe!=='number') {
+            timespan = diffBetweenDays(timeframe.date)
         }
         HabitInfo=curTask.getCompleteHistory(timespan,curTask.startDate,mapAllValuesEqual(dueDates) ? curTask.dueDates:dueDates)
     }
