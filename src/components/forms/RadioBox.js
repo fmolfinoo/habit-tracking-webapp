@@ -6,7 +6,7 @@ function RadioBox({name,value,setState,group}){
         setState(value)
     }
     return(
-        <div class={"TaskItem"}>
+        <div key={name} className={"TaskItem"}>
             <input type={"radio"} name={group} onChange={()=>onSelect(value)}/>
             <label>{name}</label>
         </div>

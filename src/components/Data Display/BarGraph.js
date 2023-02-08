@@ -12,9 +12,7 @@ function BarGraph({curTask,dueDates,timeframe=30}){
             timespan = diffBetweenDays(curTask.TaskChanges.get(timeframe).date)
         }
         HabitInfo=curTask.getCompleteHistory(timespan,curTask.startDate,mapAllValuesEqual(dueDates) ? curTask.dueDates:dueDates)
-        console.log(HabitInfo)
     }
-    console.log("On bar habit info",HabitInfo)
     return(
         <div>
             {curTask.constructor.name==="habit" &&

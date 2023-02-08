@@ -1,4 +1,4 @@
-import React , {useState,useEffect} from "react";
+import React  from "react";
 import {Line} from "react-chartjs-2";
 import { Chart as ChartJS } from 'chart.js/auto'
 import generateMovingAverageList from "../../utils/generateMovingAverageList";
@@ -10,7 +10,9 @@ function LineGraph({curTask,movingAverage=false,dueDates,timeframe=30}){
     let currentTask=undefined
     let HabitInfo=undefined
     if(curTask){
-        if(typeof timeframe==='string'){
+        console.log(timeframe)
+        //To fix timeframe for changes
+        if(typeof timeframe!=='string'){
             timeframe=diffBetweenDays(curTask.TaskChanges.get(timeframe).date)
         }
         //We check if dueDates has any date activated if not we use default days

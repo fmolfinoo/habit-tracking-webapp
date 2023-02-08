@@ -1,5 +1,4 @@
 import {user} from "./user";
-import login from "./pages/login";
 const GlobalTestUser = new user("disposable.17316@aleeas.com", "EpC8Y5XkqRKT2H");
 beforeAll(async ()=>{
     let response=await GlobalTestUser.login();

@@ -5,7 +5,6 @@ import Navbar from "../components/Navbar";
 import recreateUser from "../utils/recreateUser";
 import DailiesTable from "../components/Data Display/DailiesTable";
 import HabitsTable from "../components/Data Display/HabitsTable";
-console.log("on Trends");
 export function SuccessRate() {
     let User=recreateUser(useLocation().state.user)
     return (

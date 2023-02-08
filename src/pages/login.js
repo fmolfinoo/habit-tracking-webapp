@@ -33,8 +33,8 @@ function Login(){
                 <h2>Login</h2>
                 {/*ERROR*/}
                 <div className={"form-group"}>
-                    <label htmlFor={"name"}>Name:</label>
-                    <input className={"text-input"} type={"text"} name={"username"} id={"username"} onChange={e=>setDetails({...details,username:e.target.value})}/>
+                    <label  htmlFor={"name"}>Name:</label>
+                    <input id={"username"} className={"text-input"} type={"text"} name={"username"} onChange={e=>setDetails({...details,username:e.target.value})}/>
                 </div>
                 <div className={"form-group"}>
                     <label htmlFor={"password"}>Password:</label>

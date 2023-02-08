@@ -1,4 +1,4 @@
-import React , {useState,useEffect} from "react";
+import React , {useState} from "react";
 import {useLocation} from "react-router";
 import Navbar from "../components/Navbar";
 import recreateUser from "../utils/recreateUser";
@@ -18,7 +18,6 @@ export function CreateChange() {
         setCurChange(change)
         setCurDate(getDateUtcWithoutTime(change.date))
         setName(change.name)
-        console.log(curTask.getChangesList())
     }
 
     const createHandler=async (event) => {
@@ -48,7 +47,6 @@ export function CreateChange() {
         });
         await User.refresh()
         setCurChange(undefined)
-        console.log("change deleted=", curTask.getChangesList())
     }
     const modifyHandler=async (event) => {
         //if the name is empty we return nothing
@@ -64,26 +62,25 @@ export function CreateChange() {
         });
         await User.refresh()
         setCurChange(undefined)
-        console.log("change mod=", curTask.getChangesList())
 
     }
     return(
         <div className={"body"}>
             <Navbar user={User}/>
-            <h1>On calendar</h1>
+            <h1>On Modify Change</h1>
             <div className={"menu"}>
             <FormBox legend={"Select task:"} optionList={
                 [
-                    <RadioSelector group={"task"} setState={setTask} title={"Habits"} getName={(e)=>{ return e.name}} optionsList={mapGetTypeList(User.tasks,"habit")}/>,
-                    <RadioSelector group={"task"} setState={setTask} title={"Dailies"} getName={(e)=>{ return e.name}} optionsList={mapGetTypeList(User.tasks,"daily")}/>
+                    <RadioSelector key={"radio 1"} group={"task"} setState={setTask} title={"Habits"} getName={(e)=>{ return e.name}} optionsList={mapGetTypeList(User.tasks,"habit")}/>,
+                    <RadioSelector key={"radio 2"} group={"task"} setState={setTask} title={"Dailies"} getName={(e)=>{ return e.name}} optionsList={mapGetTypeList(User.tasks,"daily")}/>
                 ]}
             />
             {curTask!==undefined&&
                 <div>
                     <FormBox legend={"Select Change for Current Task:"} optionList={
                         [
-                            <RadioSelector group={"Change"} setState={setChange} getName={()=>"Create New Change"} optionsList={[{name:"",date:new Date(Date.now()),new:true}]}/>,
-                            <RadioSelector group={"Change"} setState={setChange} title={"Modify Existing Changes:"} getName={(e)=>{ return e.name+" ("+e.date.toLocaleDateString()+")"}} optionsList={curTask.getChangesList()}/>
+                            <RadioSelector key={"radio 3"} group={"Change"} setState={setChange} getName={()=>"Create New Change"} optionsList={[{name:"",date:new Date(Date.now()),new:true}]}/>,
+                            <RadioSelector key={"radio 4"} group={"Change"} setState={setChange} title={"Modify Existing Changes:"} getName={(e)=>{ return e.name+" ("+e.date.toLocaleDateString()+")"}} optionsList={curTask.getChangesList()}/>
                         ]}
                     />
                 </div>

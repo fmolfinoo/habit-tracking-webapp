@@ -2,7 +2,6 @@ import React from "react";
 import "../components/css/Navbar.css"
 import Navbar from "../components/Navbar";
 import recreateUser from "../utils/recreateUser";
-console.log("on Menu");
 export function Menu() {
     let User=recreateUser(sessionStorage.getItem("user"))
     return (

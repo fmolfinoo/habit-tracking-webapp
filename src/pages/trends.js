@@ -23,14 +23,14 @@ export function Trends() {
             <div className={"menu"}>
                 <FormBox legend={"Select the task to display:"} optionList={
                     [
-                        <RadioSelector setState={setTask} title={"Habits"} getName={(e)=>{ return e.name}} optionsList={mapGetTypeList(User.tasks,"habit")}/>,
-                        <RadioSelector setState={setTask} title={"Dailies"} getName={(e)=>{ return e.name}} optionsList={mapGetTypeList(User.tasks,"daily")}/>
+                        <RadioSelector key={"radio-menu 1"} setState={setTask} title={"Habits"} getName={(e)=>{ return e.name}} optionsList={mapGetTypeList(User.tasks,"habit")}/>,
+                        <RadioSelector key={"radio-menu 2"}  setState={setTask} title={"Dailies"} getName={(e)=>{ return e.name}} optionsList={mapGetTypeList(User.tasks,"daily")}/>
                     ]}
                 />
                 {curTask!==undefined &&
                     <FormBox legend={"Select the type of bar graph to display"} optionList={
                         [
-                            <RadioSelector setState={setGraph} optionsList={["Bar","Line(Moving Average)","Line(Raw Data)"]}/>,
+                            <RadioSelector key={"radio-menu 3"} setState={setGraph} optionsList={["Bar","Line(Moving Average)","Line(Raw Data)"]}/>,
                         ]}
                     />
                 }
@@ -38,13 +38,13 @@ export function Trends() {
                     <div className={"menu"}>
                         <FormBox legend={"Select timeframe to display"} optionList={
                             [
-                                <RadioSelector setState={setTimeframe} title={"In days:"} optionsList={[7,14,30,90,180,360]}/>,
-                                <RadioSelector setState={setTimeframe} getName={(e)=>{ return e.name+" ("+e.date.toLocaleDateString()+")"}} title={"Since change:"} optionsList={curTask.getChangesList()}/>
+                                <RadioSelector key={"radio-graph 1"} setState={setTimeframe} title={"In days:"} optionsList={[7,14,30,90,180,360]}/>,
+                                <RadioSelector key={"radio-graph 2"} setState={setTimeframe} getName={(e)=>{ return e.name+" ("+e.date.toLocaleDateString()+")"}} title={"Since change:"} optionsList={curTask.getChangesList()}/>
                             ]}
                         />
                         <FormBox legend={"Select Days to display"} optionList={
                         [
-                        <CheckBoxSelector curState={curDueDates} setState={setDueDates} optionsList={["m", "t", "w", "th", "f", "s", "su"]}/>,
+                        <CheckBoxSelector key={"box 1"} curState={curDueDates} setState={setDueDates} optionsList={["m", "t", "w", "th", "f", "s", "su"]}/>,
                         ]}
                         />
                     </div>

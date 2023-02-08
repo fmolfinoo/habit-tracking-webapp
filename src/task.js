@@ -25,9 +25,8 @@ export class task{
         const matchName = new RegExp(/.*(?=,[0-9]{4}-(1[0-2]|0[0-9])-[0-3][0-9]\))/g);
         matchedList.forEach((e)=>{
             //Have to do this process to get name because lookbehind is not supported on Safari
-            let name="";
             //Removing the date from string to get [comment]: # (CHANGE:name
-            name=e.match(matchName)[0];
+            let name=e.match(matchName)[0];
             //removing the [comment]: # (CHANGE: section to get only the name
             name=name.replace(/\[comment]:\W*#\W*\(CHANGE:/g,"");
             //pattern match to get only the date
@@ -51,6 +50,7 @@ export class task{
         let changeObj={name : changeName ,date:getDateFromString(changeDate), copy:changeString}
         //we check if there is no other chamges and the warning message have not been added before
         if(this.TaskChanges.size===0&&!this.notes.includes("[comment]: # (BELOW THIS COMMENT LIES ALL THE CHANGES INFORMATION RELATED TO THIS TASK DON'T DELETE OR WRITE NOTES BELOW THIS MESSAGE)")){
+            // eslint-disable-next-line no-useless-concat
             this.notes=this.notes+"\n"+"[comment]: # (BELOW THIS COMMENT LIES ALL THE CHANGES INFORMATION RELATED TO THIS TASK DON'T DELETE OR WRITE NOTES BELOW THIS MESSAGE)"
         }
         this.TaskChanges.set(changeName,changeObj)
@@ -60,7 +60,6 @@ export class task{
         if(!success){
             alert("Communication with Server Failed changes could not be saved")
         }
-        console.log("Current Changes",this.TaskChanges)
 
     }
     async modifyTaskChange(changeObj,newName,newDate){
@@ -84,7 +83,7 @@ export class task{
         if(!success){
             alert("Communication with Server Failed")
         }
-        console.log("Current Changes",this.TaskChanges)
+
     }
 
     async removeTaskChange(name){
@@ -94,7 +93,7 @@ export class task{
         if(!success){
             alert("Communication with Server Failed")
         }
-        console.log("Current Changes",this.TaskChanges)
+
     }
     //This function will replace the current note of the task on the server for the input string. And update the stored notes
     async modifyNote(note){
@@ -102,7 +101,7 @@ export class task{
         if(note===undefined||note===""){
             throw new Error("Empty Input Error")
         }
-        console.log(note)
+
         let url="https://habitica.com/api/v3/tasks/"+this.id;
         let response= await fetch(url, {
             method: "PUT",
@@ -193,7 +192,7 @@ export class habit extends task{
                 numDays += 1.0
             }
         }
-        //console.log("numDays",numDays,"PositiveSum",PositiveSum,"NegativeSum",NegativeSum)
+
         //If the numDays passed is not zero we return the average success rate else we return 0
         return numDays!==0.0 ? {Positive:PositiveSum/numDays,Negative:NegativeSum/numDays} : {Positive:0.0,Negative:0.0}
     }
@@ -304,7 +303,7 @@ export class daily extends task{
                 numDays += 1.0
             }
         }
-        //console.log("numDays",numDays,"Sum",sum)
+
         //If the numDays passed is not zero we return the average success rate else we return 0
         return numDays!==0.0 ? sum/numDays : 0.0
     }

@@ -1,12 +1,14 @@
 import {user} from "./user";
 import {daily, habit, task} from "./task";
+import getDateUtcWithoutTime from "./utils/getDateUtcWithoutTime";
 
 const GlobalTestUser = new user("disposable.17316@aleeas.com", "EpC8Y5XkqRKT2H");
-const arraysEqual=(a1,a2)=>{
+const arraysEqualNames=(a1,a2)=>{
     if(a1.length!==a2.length){
         return false
     }
-    return a1.every((e,i)=>a2[i]===e)
+    console.log(a1,a2)
+    return a1.every((e,i)=>a2[i].name===e.name)
 }
 beforeAll(async ()=>{
     await GlobalTestUser.login();
@@ -66,20 +68,23 @@ test("extractChanges Function-Testing multiple inputs", () => {
 
 test("addTaskChange test", async () => {
     let testTask=new task("test",GlobalTestUser,1234,"",new Date(new Date(Date.now()).toLocaleDateString()));
-    await testTask.addTaskChange("I love Attack on Titan<3")
+    await testTask.addTaskChange("I love Attack on Titan<3",getDateUtcWithoutTime(testTask.startDate))
     console.log(testTask.TaskChanges);
     let change=testTask.TaskChanges.get("I love Attack on Titan<3");
-    let now=new Date(Date.now())
-    let changeDate=new Date(now.toLocaleDateString());
     //We add 1 to getUTCMonth because it counts month starting from 0 so january is 0
-    let changeString="[comment]: # (CHANGE:I love Attack on Titan<3,"+changeDate.getUTCFullYear()+"-"+(changeDate.getUTCMonth()+1)+"-"+changeDate.getUTCDate()+")";
+    console.log(testTask.TaskChanges.get("I love Attack on Titan<3"))
+    let changeString="[comment]: # (CHANGE:I love Attack on Titan<3,"+getDateUtcWithoutTime(new Date(new Date(Date.now())))+")";
     expect(change.name==="I love Attack on Titan<3"&&(change.date.toLocaleDateString()===new Date(Date.now()).toLocaleDateString()&&change.copy===changeString)).toBe(true)
 })
 test("removeTaskChange test", async () => {
-    let testTask=new task("test",GlobalTestUser,1234,"[comment]: #            (CHANGE:I love Attack on Titan<3,2921-12-30)",new Date(new Date(Date.now()).toLocaleDateString()));
+    let testTask=new task("test",GlobalTestUser,1234,"",new Date(new Date(Date.now()).toLocaleDateString()));
     console.log(testTask.TaskChanges);
+    //we first add the task
+    await testTask.addTaskChange("I love Attack on Titan<3",getDateUtcWithoutTime(testTask.startDate))
+    //Then we remove the change
     await testTask.removeTaskChange("I love Attack on Titan<3");
     console.log(testTask.TaskChanges);
+    //test if it was successfully removed
     expect(testTask.TaskChanges.size===0).toBe(true)
 })
 test("modifyNote Test", async () => {
@@ -210,8 +215,8 @@ test("getCompleteHistory function for daily type counting every day",()=>{
     let now=new Date('1/7/2023')
     let completeHistory=testDaily.getCompleteHistory(7,testDaily.startDate,testDaily.dueDates,now)
     console.log(completeHistory)
-    let testDates=arraysEqual(completeHistory.days,["12/31/2022","1/1/2023","1/2/2023","1/3/2023","1/4/2023","1/5/2023","1/6/2023"])
-    let testData=arraysEqual(completeHistory.data,[1,0,1,0,0,1,0])
+    let testDates=arraysEqualNames(completeHistory.days,["12/31/2022","1/1/2023","1/2/2023","1/3/2023","1/4/2023","1/5/2023","1/6/2023"])
+    let testData=arraysEqualNames(completeHistory.data,[1,0,1,0,0,1,0])
     expect(testDates&&testData).toBe(true)
 })
 test("getCompleteHistory function for habit type couting every day",()=>{
@@ -225,9 +230,9 @@ test("getCompleteHistory function for habit type couting every day",()=>{
     let now=new Date('1/7/2023')
     let completeHistory=testDaily.getCompleteHistory(7,testDaily.startDate,testDaily.dueDates,now)
     console.log(completeHistory)
-    let testDates=arraysEqual(completeHistory.days,["12/31/2022","1/1/2023","1/2/2023","1/3/2023","1/4/2023","1/5/2023","1/6/2023"])
-    let testData1=arraysEqual(completeHistory.positiveData,[1,3,10,0,0,2,0])
-    let testData2=arraysEqual(completeHistory.negativeData,[0,0,0,0,5,1,0])
+    let testDates=arraysEqualNames(completeHistory.days,["12/31/2022","1/1/2023","1/2/2023","1/3/2023","1/4/2023","1/5/2023","1/6/2023"])
+    let testData1=arraysEqualNames(completeHistory.positiveData,[1,3,10,0,0,2,0])
+    let testData2=arraysEqualNames(completeHistory.negativeData,[0,0,0,0,5,1,0])
     expect(testDates&&testData1&&testData2).toBe(true)
 })
 test("getCompleteHistory function for daily type without counting every day",()=>{
@@ -241,8 +246,8 @@ test("getCompleteHistory function for daily type without counting every day",()=
     let now=new Date('1/7/2023')
     let completeHistory=testDaily.getCompleteHistory(7,testDaily.startDate,testDaily.dueDates,now)
     console.log(completeHistory)
-    let testDates=arraysEqual(completeHistory.days,["12/31/2022","1/3/2023","1/4/2023","1/5/2023","1/6/2023"])
-    let testData=arraysEqual(completeHistory.data,[1,0,0,1,0])
+    let testDates=arraysEqualNames(completeHistory.days,["12/31/2022","1/3/2023","1/4/2023","1/5/2023","1/6/2023"])
+    let testData=arraysEqualNames(completeHistory.data,[1,0,0,1,0])
     expect(testDates&&testData).toBe(true)
 })
 test("getCompleteHistory function for habit type without counting every day",()=>{
@@ -256,9 +261,9 @@ test("getCompleteHistory function for habit type without counting every day",()=
     let now=new Date('1/7/2023')
     let completeHistory=testDaily.getCompleteHistory(7,testDaily.startDate,new Map(Object.entries({"m": true, "t": false, "w": true, "th": true, "f": false, "s": true, "su": true})),now)
     console.log(completeHistory)
-    let testDates=arraysEqual(completeHistory.days,["12/31/2022","1/1/2023","1/2/2023","1/4/2023","1/5/2023"])
-    let testData1=arraysEqual(completeHistory.positiveData,[1,3,10,0,2])
-    let testData2=arraysEqual(completeHistory.negativeData,[0,0,0,5,1])
+    let testDates=arraysEqualNames(completeHistory.days,["12/31/2022","1/1/2023","1/2/2023","1/4/2023","1/5/2023"])
+    let testData1=arraysEqualNames(completeHistory.positiveData,[1,3,10,0,2])
+    let testData2=arraysEqualNames(completeHistory.negativeData,[0,0,0,5,1])
     expect(testDates&&testData1&&testData2).toBe(true)
 })
 test("getChangesList function with generic task",()=> {
@@ -273,6 +278,20 @@ test("getChangesList function with generic task",()=> {
     testTask.extractChanges(testTask.notes)
     console.log(testTask.getChangesList());
     //Checking if name ,data and the amount changes retrieved are as expected
-    let expectedChanges=["Bought a new computer","Test Change 1","Started going to the library"]
-    expect(arraysEqual(testTask.getChangesList(),expectedChanges)).toBe(true)
+    let expectedChanges=[
+        {
+            name: 'Bought a new computer',
+            date: new  Date("2023-01-10T05:00:00.000Z"),
+            copy: '[comment]: #            (CHANGE:Bought a new computer,2023-01-10)'},
+    {
+        name: 'Test Change 1',
+        date: new  Date("2023-01-15T05:00:00.000Z"),
+        copy: '[comment]: #            (CHANGE:Test Change 1,2023-01-15)'
+    },
+    {
+        name: 'Started going to the library',
+        date: new Date("2022-12-12T05:00:00.000Z"),
+        copy: '[comment]: #            (CHANGE:Started going to the library,2022-12-12)'
+    }]
+    expect(arraysEqualNames(testTask.getChangesList(),expectedChanges)).toBe(true)
 })

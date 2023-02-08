@@ -1,5 +1,4 @@
 import React from "react";
-
 function CheckBox({value,curState,setState}){
     const onSelect=(value)=>{
         curState.set(value,!curState.get(value))

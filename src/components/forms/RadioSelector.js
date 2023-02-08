@@ -1,14 +1,14 @@
-import React , {useState,useEffect} from "react";
+import React  from "react";
 import "../css/TaskSelector.css"
 import RadioBox from "./RadioBox";
 function RadioSelector({setState,optionsList,title,getName=(e)=>{return e},group="default"}){
     let ItemList=[]
-    ItemList.push(<h3>{title}</h3>)
+    ItemList.push(<h3 key={title}>{title}</h3>)
     for(let e of optionsList){
-        ItemList.push(<RadioBox name={getName(e)} value={e} setState={setState} group={group} />)
+        ItemList.push(<RadioBox key={getName(e)} name={getName(e)} value={e} setState={setState} group={group} />)
     }
     return(
-        <div class={"RadioList"}>
+        <div key={title} className={"RadioList"}>
             {ItemList}
         </div>
     );
