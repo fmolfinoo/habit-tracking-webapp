@@ -1,11 +1,11 @@
 import "../../pages/css/table.css"
 import mapGetTypeList from "../../utils/mapGetTypeList";
+import {daily, habit} from "../../task";
 function HabitsTable({user}){
     let habitsTable=[];
-    let n=0;
-    for(let e of mapGetTypeList(user.tasks,"habit")){
-        habitsTable.push(<HabitsTableRow key={"h"+n} task={e}/>)
-        n++
+    let tempHabit=new habit("test",undefined,"1234","",[],"2022-10-30");
+    for(let e of mapGetTypeList(user.tasks,tempHabit)){
+        habitsTable.push(<HabitsTableRow key={e.name} task={e}/>)
     }
     return(
         <table className={"Habit-Table"}>

@@ -5,9 +5,6 @@ import React from "react";
 function App() {
     return (
         <div className={"App"}>
-            <Helmet>
-                <link rel="icon" type="image/png" href="../public/black_teal_hat_outline.png"/>
-            </Helmet>
             <Login />
         </div>
     );

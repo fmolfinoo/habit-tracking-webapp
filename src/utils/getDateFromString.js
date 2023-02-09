@@ -4,7 +4,8 @@
  *
  */
 function getDateFromString(stringDate){
-    if(stringDate.constructor.name==="Date"){
+    //check if the input is of type date
+    if(stringDate.constructor===new Date(Date.now()).constructor){
         return stringDate
     }
     let splitDate=stringDate.split("-")

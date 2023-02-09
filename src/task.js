@@ -72,16 +72,16 @@ export class task{
         let changeString="[comment]: # (CHANGE:"+newName+","+newDate+")";
         changeObj.name=newName
         changeObj.date=getDateFromString(newDate)
-        //we delete the change record of the note
-        this.notes=this.notes.replace(changeObj.copy,"")
-        //we add the new change record
+        //we replace the old change string with the new one
+        this.notes=this.notes.replace(changeObj.copy,changeString)
+        //then we store the new one at the change object
         changeObj.copy=changeString
-        this.notes=this.notes+changeString
         // we add the new key to the map
         this.TaskChanges.set(changeObj.name,changeObj)
+        //We modify the note in the server
         let success=await this.modifyNote(this.notes)
         if(!success){
-            alert("Communication with Server Failed")
+            alert("Communication with Server Failed Change Modification Not Saved")
         }
 
     }
@@ -254,7 +254,7 @@ export class daily extends task{
      * @param {Object} dueDates
      * @param {string}notes
      * @param {Object}history
-     * @param {string}startDate
+     * @param {Date}startDate
      */
     constructor(name,user,id,dueDates,notes,history,startDate) {
         super(name,user,id,notes,startDate);

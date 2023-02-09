@@ -8,7 +8,6 @@ export function Menu() {
         <div>
             <Navbar user={User}/>
             <div className={"description"}>
-                <body>
                 <h1>Instructions:</h1>
                 <h2>Modify Changes</h2>
                 <p >The Modify Changes section allows users to add, modify, or delete changes made to the task.</p>
@@ -19,7 +18,6 @@ export function Menu() {
                 <h2>Refresh Button</h2>
                 <p >Refreshes Habit data from the server.</p>
                 <p> <b> Note: If the task was created after the start of the selected timeframe, the performance for that timeframe will only reflect the performance since creation.</b></p>
-                </body>
             </div>
         </div>
     );

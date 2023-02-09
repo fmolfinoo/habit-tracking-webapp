@@ -7,11 +7,14 @@ import {user} from "../user";
  * @param User
  * @returns {user|*}
  */
+//Used for type checking
+const tempUser=new user("","")
 function recreateUser(User){
-    if(User===undefined||User===null||User.constructor.name!=="user"){
+    if(User===undefined||User===null||User.constructor!==tempUser.constructor){
         let userData=JSON.parse(sessionStorage.getItem("user"));
         User=new user(userData.username,userData.password,userData.id,userData.apiToken,userData.data)
         User.processTaskData(User.data)
+        console.log("Created User",User)
         return User
     }
     return User

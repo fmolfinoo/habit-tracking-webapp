@@ -9,8 +9,6 @@ export class user{
         this.apiToken=apiToken
         this.data=data
         this.tasks=new Map()
-        //this.dailies=new Map();
-        //this.habits=new Map();
     }
     //This function send a login request to the server and save the id and api token to get more information from server
     async login(){
@@ -52,6 +50,7 @@ export class user{
         }).then(res => {
             return res.json()
         }).then(data => {
+            console.log("data",data)
             return data
         }).catch(error => console.log("ERROR:", error));
         if(response.success) {

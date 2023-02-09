@@ -3,6 +3,10 @@ import {Bar} from "react-chartjs-2";
 import generateNegativeList from "../../utils/generateNegativeList";
 import diffBetweenDays from "../../utils/diffBetweenDays";
 import mapAllValuesEqual from "../../utils/mapAllValuesEqual";
+import {text} from "react-table/src/filterTypes";
+import {daily, habit} from "../../task";
+const tempDaily=new daily("test",undefined,"1234", {},"",[],"2022-10-30");
+const tempHabit=new habit("test",undefined,"1234","",[],"2022-10-30");
 function BarGraph({curTask,dueDates,timeframe=30}){
     let HabitInfo=undefined
     if(curTask && timeframe){
@@ -14,7 +18,7 @@ function BarGraph({curTask,dueDates,timeframe=30}){
     }
     return(
         <div>
-            {curTask.constructor.name==="habit" &&
+            {curTask.constructor===tempHabit.constructor &&
                 <Bar data={{
                     labels: curTask!==undefined ? HabitInfo.days:[],
                     datasets:[
@@ -49,7 +53,7 @@ function BarGraph({curTask,dueDates,timeframe=30}){
                         }
                 }}
         />}
-            {curTask.constructor.name==="daily" &&
+            {curTask.constructor===tempDaily.constructor &&
                 <Bar data={{
                     labels: curTask!==undefined ? HabitInfo.days:[],
                     datasets:[

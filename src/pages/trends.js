@@ -1,4 +1,4 @@
-import React , {useState} from "react";
+import React , {render,useState} from "react";
 import "./css/trends.css"
 import {useLocation} from "react-router";
 import Navbar from "../components/Navbar";
@@ -9,8 +9,13 @@ import FormBox from "../components/forms/formBox";
 import LineGraph from "../components/Data Display/LineGraph";
 import CheckBoxSelector from "../components/forms/CheckBoxSelector";
 import mapGetTypeList from "../utils/mapGetTypeList";
+import {daily, habit} from "../task";
+//Used for type comparison
+const tempDaily=new daily("test",undefined,"1234", {},"",[],"2022-10-30");
+const tempHabit=new habit("test",undefined,"1234","",[],"2022-10-30");
 export function Trends() {
     let User=recreateUser(useLocation().state.user)
+
     const[curTask,setTask]=useState(undefined)
     const[curGraph,setGraph]=useState("")
     const[curTimeframe,setTimeframe]=useState(30)
@@ -23,8 +28,8 @@ export function Trends() {
             <div className={"menu"}>
                 <FormBox legend={"Select the task to display:"} optionList={
                     [
-                        <RadioSelector key={"radio-menu 1"} setState={setTask} title={"Habits"} getName={(e)=>{ return e.name}} optionsList={mapGetTypeList(User.tasks,"habit")}/>,
-                        <RadioSelector key={"radio-menu 2"}  setState={setTask} title={"Dailies"} getName={(e)=>{ return e.name}} optionsList={mapGetTypeList(User.tasks,"daily")}/>
+                        <RadioSelector key={"radio-menu 1"} setState={setTask} title={"Habits"} getName={(e)=>{ return e.name}} optionsList={mapGetTypeList(User.tasks,tempHabit)}/>,
+                        <RadioSelector key={"radio-menu 2"}  setState={setTask} title={"Dailies"} getName={(e)=>{ return e.name}} optionsList={mapGetTypeList(User.tasks,tempDaily)}/>
                     ]}
                 />
                 {curTask!==undefined &&

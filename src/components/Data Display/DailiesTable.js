@@ -1,11 +1,12 @@
 import {numToPercentage} from "../../utils/numToPercentage";
 import mapGetTypeList from "../../utils/mapGetTypeList";
+import {daily, habit, task} from "../../task";
 function DailiesTable({user}){
     let dailiesTable=[];
-    let n=0;
-    for(let e of mapGetTypeList(user.tasks,"daily")){
-        dailiesTable.push(<DailiesTableRow key={"d"+n} task={e}/>)
-        n++
+    //To compare the type on mapGetTypeList function
+    let tempDaily=new daily("test",undefined,"1234", {},"",[],"2022-10-30");
+    for(let e of mapGetTypeList(user.tasks,tempDaily)){
+        dailiesTable.push(<DailiesTableRow key={e.name} task={e}/>)
     }
     return(
         <table className={"Dailies-Table"}>

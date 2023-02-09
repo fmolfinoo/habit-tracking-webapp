@@ -7,7 +7,10 @@ import getDateUtcWithoutTime from "../utils/getDateUtcWithoutTime";
 import RadioSelector from "../components/forms/RadioSelector";
 import mapGetTypeList from "../utils/mapGetTypeList";
 import FormBox from "../components/forms/formBox";
-
+import {daily, habit} from "../task";
+//Used for type comparison
+const tempDaily=new daily("test",undefined,"1234", {},"",[],"2022-10-30");
+const tempHabit=new habit("test",undefined,"1234","",[],"2022-10-30");
 export function CreateChange() {
     let User=recreateUser(useLocation().state.user)
     const[curTask,setTask]=useState()
@@ -71,8 +74,8 @@ export function CreateChange() {
             <div className={"menu"}>
             <FormBox legend={"Select task:"} optionList={
                 [
-                    <RadioSelector key={"radio 1"} group={"task"} setState={setTask} title={"Habits"} getName={(e)=>{ return e.name}} optionsList={mapGetTypeList(User.tasks,"habit")}/>,
-                    <RadioSelector key={"radio 2"} group={"task"} setState={setTask} title={"Dailies"} getName={(e)=>{ return e.name}} optionsList={mapGetTypeList(User.tasks,"daily")}/>
+                    <RadioSelector key={"radio 1"} group={"task"} setState={setTask} title={"Habits"} getName={(e)=>{ return e.name}} optionsList={mapGetTypeList(User.tasks,tempHabit)}/>,
+                    <RadioSelector key={"radio 2"} group={"task"} setState={setTask} title={"Dailies"} getName={(e)=>{ return e.name}} optionsList={mapGetTypeList(User.tasks,tempDaily)}/>
                 ]}
             />
             {curTask!==undefined&&

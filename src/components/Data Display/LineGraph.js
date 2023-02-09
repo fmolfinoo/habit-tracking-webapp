@@ -6,7 +6,9 @@ import generateMovingAverageList from "../../utils/generateMovingAverageList";
 import generateNegativeList from "../../utils/generateNegativeList";
 import diffBetweenDays from "../../utils/diffBetweenDays";
 import mapAllValuesEqual from "../../utils/mapAllValuesEqual";
-
+import {daily, habit} from "../../task";
+const tempDaily=new daily("test",undefined,"1234", {},"",[],"2022-10-30");
+const tempHabit=new habit("test",undefined,"1234","",[],"2022-10-30");
 function LineGraph({curTask,movingAverage=false,dueDates,timeframe=30}){
     let HabitInfo=undefined
     if(curTask){
@@ -20,7 +22,7 @@ function LineGraph({curTask,movingAverage=false,dueDates,timeframe=30}){
     }
     return(
         <div>
-            {curTask.constructor.name==="habit" &&
+            {curTask.constructor===tempHabit.constructor &&
                 <Line data={{
                     labels: curTask!==undefined ? HabitInfo.days:[],
                     datasets:[
@@ -55,7 +57,7 @@ function LineGraph({curTask,movingAverage=false,dueDates,timeframe=30}){
                          }
                      }}
                 />}
-            {curTask.constructor.name==="daily" &&
+            {curTask.constructor===tempDaily.constructor &&
                 <Line data={{
                     labels: curTask!==undefined ? HabitInfo.days:[],
                     datasets:[
