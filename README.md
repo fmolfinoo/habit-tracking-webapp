@@ -23,6 +23,6 @@ It refreshes Habit data from Habitica server.
 #### Note:
 1) **You need a [Habitica](https://habitica.com/) Account to use it.**
 2) **The tool does not contact any other server other than the Habitica one and process all the information locally.**
-3) To logout simply close all opened windows of the tool. 4
+3) To logout simply close all opened windows of the tool.
 4) If a task was created after the start of a timeframe of a graph. For example, we created the task this week, and you check the last 30 days of performance you will only get the result of this week or the performance since creation on both the plots and graphs in this application. 
 5) The moving average shows the average performance from the start of the timeframe until each point on the graph. For example, in point 5 we have the average of the first 5 points and on 6 of the first six and so on. This is useful be able to more easily visualise changes in the trend of your performance.
