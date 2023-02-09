@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/fmolfinoo.github.io/habit-tracking-webapp/static/css/main.8277af7f.css",
-    "main.js": "/fmolfinoo.github.io/habit-tracking-webapp/static/js/main.99bf7a10.js",
-    "static/js/787.28d4f92c.chunk.js": "/fmolfinoo.github.io/habit-tracking-webapp/static/js/787.28d4f92c.chunk.js",
-    "index.html": "/fmolfinoo.github.io/habit-tracking-webapp/index.html",
-    "main.8277af7f.css.map": "/fmolfinoo.github.io/habit-tracking-webapp/static/css/main.8277af7f.css.map",
-    "main.99bf7a10.js.map": "/fmolfinoo.github.io/habit-tracking-webapp/static/js/main.99bf7a10.js.map",
-    "787.28d4f92c.chunk.js.map": "/fmolfinoo.github.io/habit-tracking-webapp/static/js/787.28d4f92c.chunk.js.map"
+    "main.css": "/n/static/css/main.8277af7f.css",
+    "main.js": "/n/static/js/main.c128f090.js",
+    "static/js/787.28d4f92c.chunk.js": "/n/static/js/787.28d4f92c.chunk.js",
+    "index.html": "/n/index.html",
+    "main.8277af7f.css.map": "/n/static/css/main.8277af7f.css.map",
+    "main.c128f090.js.map": "/n/static/js/main.c128f090.js.map",
+    "787.28d4f92c.chunk.js.map": "/n/static/js/787.28d4f92c.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.8277af7f.css",
-    "static/js/main.99bf7a10.js"
+    "static/js/main.c128f090.js"
   ]
 }
