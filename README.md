@@ -1,19 +1,21 @@
 ## Introduction 
-Welcome to our habit tracking tool! It's time to turn those resolutions into reality. Our tool is here to help you track changes related to your task and see if they really help you stick to your habits.
+Welcome to my Habitica Habit Tracking Tool! It's time to turn those resolutions into reality. Our tool is here to help you track changes related to your task and see if they really help you stick to your habits.
 ## Description of the tool:
-The tool tracks changes related to a task and helps evaluate the effectiveness of those changes in maintaining the habit. We define a change as a moment in time when you did something important related to that task that could change how effective you are at completing that task in the future. It consists of two elements the title (what you did) and the date (when you did it). For example: if your habit is exercising an example change could be that you got a gym buddy on 17 of February of 2022(02/17/2022). The purpose of my tool is to let you track those changes and see if they were effective as well as well as how successful you were at maintaining the habit on some common timeframes (the last 7,14,30,90, 180 and 360).
+My tool helps you track and evaluate changes related to a habit. A change is defined as an important moment in time when you did something related to the task that can impact your ability to complete it. 
+
+Changes consist of two elements: the title of the change and the date it was made. For example, if your habit is exercise, a change could be getting a gym buddy on February 17th, 2022. The tool allows you to track these changes and see if they were effective in maintaining the habit you can also check your habit history over a certain period of time (the past 7, 14, 30, 90, 180, and 360 days). The purpose of the tool is to help you maintain your habit and evaluate the effectiveness of any changes made.
 ![img.png](Instructions.png)
 ### Sections:
 The page contains three sections:
 #### Modify Changes Section:
 That let you add, modify (modify the date and name) or delete changes associated with each task.
-![img_1.png](Modify Change.png)
+![img_1.png](ModifyChange.png)
 #### The Trends Section: 
 This section let you see how well you performed in the selected task by displaying your performance on a visual way via plots. The plots currently available are graphs bar, line with raw data and line moving average. The timeframes that we can use for the graph go since the date we make a change or some common timeframes the last 7,14,30,90, 180 and 360 days.
 ![img_4.png](Trends.png)
 #### The Success Rate Section: 
 Show you charts with the following information for each task: the day of creation and the number of days since that day, the average success rate for the last 7,14,30,90, 180 and 360 days and since creation.
-![img_5.png](Success Rate.png)
+![img_5.png](SuccessRate.png)
 #### Note:
 1) **The tool does not contact any other server other than the habitica one and process all the information locally.**
 2) To logout simply close all opened windows of the tool.
