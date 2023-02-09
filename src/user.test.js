@@ -1,5 +1,6 @@
 import {user} from "./user";
-const GlobalTestUser = new user("disposable.17316@aleeas.com", "EpC8Y5XkqRKT2H");
+//You have to add your own username and password to test it
+const GlobalTestUser = new user("user","pass");
 beforeAll(async ()=>{
     let response=await GlobalTestUser.login();
     if(!response){
@@ -7,7 +8,7 @@ beforeAll(async ()=>{
     }
 })
 test("Login function",async () => {
-    let testUser=new user("disposable.17316@aleeas.com","EpC8Y5XkqRKT2H")
+    let testUser=new user("user","pass")
     let test = async () => {
         let respond = await testUser.login()
         return !!(respond && testUser.id !== undefined && testUser.apiToken !== undefined);

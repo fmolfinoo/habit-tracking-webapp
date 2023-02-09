@@ -1,70 +1,21 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Introduction 
+Welcome to our habit tracking tool! It's time to turn those resolutions into reality. Our tool is here to help you track changes related to your task and see if they really help you stick to your habits.
+## Description of the tool:
+The tool tracks changes related to a task and helps evaluate the effectiveness of those changes in maintaining the habit. We define a change as a moment in time when you did something important related to that task that could change how effective you are at completing that task in the future. It consists of two elements the title (what you did) and the date (when you did it). For example: if your habit is exercising an example change could be that you got a gym buddy on 17 of February of 2022(02/17/2022). The purpose of my tool is to let you track those changes and see if they were effective as well as well as how successful you were at maintaining the habit on some common timeframes (the last 7,14,30,90, 180 and 360).
+![img.png](Instructions.png)
+### Sections:
+The page contains three sections:
+#### Modify Changes Section:
+That let you add, modify (modify the date and name) or delete changes associated with each task.
+![img_1.png](Modify Change.png)
+#### The Trends Section: 
+This section let you see how well you performed in the selected task by displaying your performance on a visual way via plots. The plots currently available are graphs bar, line with raw data and line moving average. The timeframes that we can use for the graph go since the date we make a change or some common timeframes the last 7,14,30,90, 180 and 360 days.
+![img_4.png](Trends.png)
+#### The Success Rate Section: 
+Show you charts with the following information for each task: the day of creation and the number of days since that day, the average success rate for the last 7,14,30,90, 180 and 360 days and since creation.
+![img_5.png](Success Rate.png)
+#### Note:
+1) **The tool does not contact any other server other than the habitica one and process all the information locally.**
+2) To logout simply close all opened windows of the tool.
+3) If a task was created after the start of a timeframe of a graph. For example, we created the task this week, and you check the last 30 days of performance you will only get the result of this week or the performance since creation on both the plots and graphs in this application.
+4) The moving average shows the average performance from the start of the timeframe until each point on the graph. For example, in point 5 we have the average of the first 5 points and on 6 of the first six and so on. This is useful be able to more easily visualise changes in the trend of your performance.

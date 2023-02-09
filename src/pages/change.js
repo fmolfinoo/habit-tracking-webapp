@@ -49,9 +49,9 @@ export function CreateChange() {
         setCurChange(undefined)
     }
     const modifyHandler=async (event) => {
-        //if the name is empty we return nothing
         event.preventDefault()
-        if(curName===""|| curName===curChange.name){
+        //if the input name is empty or the input name and date are the same we return without doing anything
+        if(curName===""|| (curName===curChange.name && curDate===getDateUtcWithoutTime(curChange.date))){
             return
         }
         curTask.modifyTaskChange(curChange, curName, curDate)

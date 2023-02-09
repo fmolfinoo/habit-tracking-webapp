@@ -1,8 +1,8 @@
 import {user} from "./user";
 import {daily, habit, task} from "./task";
 import getDateUtcWithoutTime from "./utils/getDateUtcWithoutTime";
-
-const GlobalTestUser = new user("disposable.17316@aleeas.com", "EpC8Y5XkqRKT2H");
+//You have to add your own username and password to test it
+const GlobalTestUser = new user("user", "pass");
 const arraysEqualNames=(a1,a2)=>{
     if(a1.length!==a2.length){
         return false

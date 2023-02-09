@@ -8,9 +8,6 @@ export function Menu() {
         <div>
             <Navbar user={User}/>
             <div className={"description"}>
-                <head>
-                    <title>Task Tracker</title>
-                </head>
                 <body>
                 <h1>Instructions:</h1>
                 <h2>Modify Changes</h2>
