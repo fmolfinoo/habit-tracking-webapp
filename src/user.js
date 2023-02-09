@@ -1,5 +1,5 @@
 import {habit,daily} from "./task";
-
+//To comply with habitica API rules for third party tools
 export class user{
 
     constructor(username,password,id=undefined,apiToken=undefined,data=undefined) {
@@ -12,14 +12,13 @@ export class user{
         //this.dailies=new Map();
         //this.habits=new Map();
     }
-
-
     //This function send a login request to the server and save the id and api token to get more information from server
     async login(){
         const response=await fetch("https://habitica.com/api/v3/user/auth/local/login", {
             method: "POST",
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type': 'application/json',
+                'x-client' : "69720e07-bece-46c9-9c9f-168f535af15a-Habitica Habit Tracker Tool"
             },
             body: JSON.stringify({
                 username: this.username,
@@ -28,6 +27,7 @@ export class user{
         }).then(res=>{
             return res.json()
         }).then(data=>{
+            console.log(data)
             return data
         }).catch(error=>console.log("ERROR:",error))
         if(response.success) {
@@ -46,7 +46,8 @@ export class user{
             headers: {
                 'Content-Type': 'application/json',
                 'x-api-user': this.id,
-                'x-api-key': this.apiToken
+                'x-api-key': this.apiToken,
+                'x-client' : "69720e07-bece-46c9-9c9f-168f535af15a-Habitica Habit Tracker Tool"
             },
         }).then(res => {
             return res.json()

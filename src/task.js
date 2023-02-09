@@ -1,5 +1,5 @@
 import getDateFromString from "./utils/getDateFromString";
-
+//To comply with habitica API rules for third party tools
 export class task{
     constructor(name,user,id,notes,startDate) {
         this.name=name;
@@ -108,7 +108,8 @@ export class task{
             headers: {
                 'Content-Type': 'application/json',
                 'x-api-user': this.user.id,
-                'x-api-key': this.user.apiToken
+                'x-api-key': this.user.apiToken,
+                'x-client' : "69720e07-bece-46c9-9c9f-168f535af15a-Habitica Habit Tracker Tool"
             },
             body: JSON.stringify({
                 notes: note

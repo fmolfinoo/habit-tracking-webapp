@@ -1,7 +1,7 @@
 import {user} from "../user";
 import recreateUser from "./recreateUser";
-
-const GlobalTestUser = new user("disposable.17316@aleeas.com", "EpC8Y5XkqRKT2H");
+//you need to add your own user and password to test it
+const GlobalTestUser = new user("user", "pass");
 beforeAll(async ()=>{
     await GlobalTestUser.login();
     await GlobalTestUser.getTasksData();
