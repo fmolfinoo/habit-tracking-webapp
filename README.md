@@ -1,9 +1,9 @@
 ## Introduction 
-Welcome to my Habitica Habit Tracking Tool! It's time to turn those resolutions into reality. Our tool is here to help you track changes related to your task and see if they really help you stick to your habits.
+Welcome to my Habitica Habit Tracking Tool! It's time to turn those resolutions into reality. This tool is here to help you track changes related to your task and see if they really help you stick to your habits.
 
 Tool link:https://fmolfinoo.github.io/habit-tracking-webapp
 ## Description of the tool:
-My tool is a Habitica third party app that helps you track and evaluate changes related to a habit. A change is defined as an important moment in time when you did something related to the task that can impact your ability to complete it. 
+This tool is a Habitica third party app that helps you track and evaluate changes related to a habit. A change is defined as an important moment in time when you did something related to the task that can impact your ability to complete it. 
 
 Changes consist of two elements: the title of the change and the date it was made. For example, if your habit is exercise, a change could be getting a gym buddy on February 17th, 2022. The tool allows you to track these changes and see if they were effective in maintaining the habit you can also check your habit history over a certain period of time (the past 7, 14, 30, 90, 180, and 360 days). The purpose of the tool is to help you maintain your habit and evaluate the effectiveness of any changes made.
 ![img.png](Instructions.png)
