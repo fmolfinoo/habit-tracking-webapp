@@ -6,7 +6,7 @@ import {Menu} from "./pages/menu";
 import {CreateChange} from "./pages/change";
 import {Error} from "./pages/error";
 import reportWebVitals from './reportWebVitals';
-import {BrowserRouter, Routes,Route} from "react-router-dom";
+import {HashRouter, Routes,Route} from "react-router-dom";
 import ProtectedRoutes from "./ProtectedRoutes"
 import {Trends} from "./pages/trends";
 import {SuccessRate} from "./pages/successRate";
@@ -14,7 +14,7 @@ import {SuccessRate} from "./pages/successRate";
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-      <BrowserRouter>
+      <HashRouter>
           <Routes>
               <Route path={"/"} element={<App/>}/>
               <Route element={<ProtectedRoutes/>}>
@@ -25,7 +25,7 @@ root.render(
                   <Route path={"*"} element={<Error/>}/>
               </Route>
           </Routes>
-      </BrowserRouter>
+      </HashRouter>
 
   </React.StrictMode>
 );
